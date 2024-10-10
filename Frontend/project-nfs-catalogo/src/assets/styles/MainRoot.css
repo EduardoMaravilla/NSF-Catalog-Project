@@ -1,0 +1,17 @@
+main {
+  background-color: azure;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
+}
+
+.showColorLevel {
+  color: white;
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+  padding: 5px;
+  border: 2px solid white;
+  border-radius: 5px;
+}

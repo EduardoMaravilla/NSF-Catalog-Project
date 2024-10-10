@@ -1,0 +1,73 @@
+/*
+        CarDto carDto = carService.getCar(carConfigurationDto.getCarDto().getId());
+        if (!carDto.equals(carConfigurationDto.getCarDto())){
+            throw new DataNotFoundException(carDto.getModel());
+        }
+        EngineDto engineDto = engineService.getEngine(carConfigurationDto.getEngineDto().getId());
+        if (!engineDto.equals(carConfigurationDto.getEngineDto())) {
+            throw new DataNotFoundException(engineDto.getModel());
+        }
+        LevelDto inductionLevelDto = levelService.getLevel(carConfigurationDto.getInductionLevelDto().getId());
+        if (!inductionLevelDto.equals(carConfigurationDto.getInductionLevelDto())) {
+            throw new DataNotFoundException(inductionLevelDto.getLevel());
+        }
+        LevelDto ecuLevelDto = levelService.getLevel(carConfigurationDto.getEcuLevelDto().getId());
+        if (!ecuLevelDto.equals(carConfigurationDto.getEcuLevelDto())) {
+            throw new DataNotFoundException(ecuLevelDto.getLevel());
+        }
+        LevelDto injectionLevelDto = levelService.getLevel(carConfigurationDto.getInjectionLevelDto().getId());
+        if (!injectionLevelDto.equals(carConfigurationDto.getInjectionLevelDto())) {
+            throw new DataNotFoundException(injectionLevelDto.getLevel());
+        }
+        LevelDto escapeLevelDto = levelService.getLevel(carConfigurationDto.getEscapeLevelDto().getId());
+        if (!escapeLevelDto.equals(carConfigurationDto.getEscapeLevelDto())) {
+            throw new DataNotFoundException(escapeLevelDto.getLevel());
+        }
+        TurboDto turboDto = turboService.getTurbo(carConfigurationDto.getTurboDto().getId());
+        if (!turboDto.equals(carConfigurationDto.getTurboDto())) {
+            throw new DataNotFoundException(turboDto.getTurboTypeDto().getType());
+        }
+        LevelDto nitroLevelDto = levelService.getLevel(carConfigurationDto.getNitroLevelDto().getId());
+        if (!nitroLevelDto.equals(carConfigurationDto.getNitroLevelDto())) {
+            throw new DataNotFoundException(nitroLevelDto.getLevel());
+        }
+        SuspensionDto suspensionDto = suspensionService.getSuspension(carConfigurationDto.getSuspensionDto().getId());
+        if (!suspensionDto.equals(carConfigurationDto.getSuspensionDto())) {
+            throw new DataNotFoundException(suspensionDto.getStreetTypeDto().getStreetType());
+        }
+        LevelDto brakeLevelDto = levelService.getLevel(carConfigurationDto.getBrakeLevelDto().getId());
+        if (!brakeLevelDto.equals(carConfigurationDto.getBrakeLevelDto())) {
+            throw new DataNotFoundException(brakeLevelDto.getLevel());
+        }
+        TireDto tireDto = tireService.getTire(carConfigurationDto.getTireDto().getId());
+        if (!tireDto.equals(carConfigurationDto.getTireDto())) {
+            throw new DataNotFoundException(tireDto.getStreetTypeDto().getStreetType());
+        }
+        LevelDto embragueLevel = levelService.getLevel(carConfigurationDto.getEmbragueLevelDto().getId());
+        if (!embragueLevel.equals(carConfigurationDto.getEmbragueLevelDto())) {
+            throw new DataNotFoundException(embragueLevel.getLevel());
+        }
+        GearDto gearDto = gearService.getGear(carConfigurationDto.getGearDto().getId());
+        if (!gearDto.equals(carConfigurationDto.getGearDto())) {
+            throw new DataNotFoundException(Integer.toString(gearDto.getGear()));
+        }
+        LevelDto differentialLevel = levelService.getLevel(carConfigurationDto.getDifferentialLevelDto().getId());
+        if (!differentialLevel.equals(carConfigurationDto.getDifferentialLevelDto())) {
+            throw new DataNotFoundException(differentialLevel.getLevel());
+        }
+        DriverDto driverDto = driverService.getDriver(carConfigurationDto.getDriverDto().getId());
+        if (!driverDto.equals(carConfigurationDto.getDriverDto())) {
+            throw new DataNotFoundException("of drive");
+        }
+        AuxiliarDto auxiliarOneDto = auxiliarService.getAuxiliar(carConfigurationDto.getAuxiliarOneDto().getId());
+        if (!auxiliarOneDto.equals(carConfigurationDto.getAuxiliarOneDto())) {
+            throw new DataNotFoundException("of auxiliarOne");
+        }
+        AuxiliarDto auxiliarTwoDto = auxiliarService.getAuxiliar(carConfigurationDto.getAuxiliarTwoDto().getId());
+        if (!auxiliarTwoDto.equals(carConfigurationDto.getAuxiliarTwoDto())) {
+            throw new DataNotFoundException("of auxiliarTwo");
+        }
+        ClassesDto classesDto = classesService.getClasses(carConfigurationDto.getClassesDto().getId());
+        if (!classesDto.equals(carConfigurationDto.getClassesDto())) {
+            throw new DataNotFoundException(classesDto.getName());
+        }*/
