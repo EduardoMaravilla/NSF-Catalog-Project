@@ -7,7 +7,6 @@ import org.eduardomaravill.nfs_catalogo.dtos.auth.UserProfileResponse;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.ValidTokenResponse;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.LogoutResponse;
 import org.eduardomaravill.nfs_catalogo.services.auth.IAuthenticationService;
-import org.eduardomaravill.nfs_catalogo.services.users_services.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

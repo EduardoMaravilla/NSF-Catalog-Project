@@ -56,18 +56,12 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     }
 
     @Override
-    public UserRegistered registerOneRacer(UserSaveDto newUser) {
+    public ValidTokenResponse registerOneRacer(UserSaveDto newUser) {
         User registeredUser = userService.registerOneRacer(newUser);
-        String jwtToken = jwtService.generateToken(registeredUser, generateExtraClaims(registeredUser));
+        String jwtToken = jwtService.generateTokenEmailValidate(registeredUser, generateExtraClaimsForEmail(registeredUser.getEmail()));
         saveUserAndToken(registeredUser, jwtToken);
-
-        UserRegistered userRegistered = new UserRegistered();
-        userRegistered.setName(registeredUser.getName());
-        userRegistered.setUsername(registeredUser.getUsername());
-        userRegistered.setEmail(registeredUser.getEmail());
-        userRegistered.setRole(registeredUser.getRole().getName());
-        userRegistered.setJwt(jwtToken);
-        return userRegistered;
+        emailService.sendEmailVerification(registeredUser,jwtToken);
+        return new ValidTokenResponse(true);
     }
 
     private void saveUserAndToken(User registeredUser, String jwtToken) {
@@ -90,6 +84,13 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         return extraClaims;
     }
 
+    private Map<String, Object> generateExtraClaimsForEmail(String email) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("email", email);
+        extraClaims.put("registerTime", System.currentTimeMillis());
+        return extraClaims;
+    }
+
     @Override
     public AuthenticationResponse login(AuthenticationRequest autRequest) {
         String usernameOrEmail = autRequest.getUsernameOrEmail();
@@ -107,8 +108,11 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
                 user.getUsername(), autRequest.getPassword()
         );
         authenticationManager.authenticate(authentication);
+
         if (!user.isEmailValid()){
-            emailService.sendEmailVerification(user);
+            String tokenEmail = jwtService.generateTokenEmailValidate(user, generateExtraClaimsForEmail(user.getEmail()));
+            saveUserAndToken(user, tokenEmail);
+            emailService.sendEmailVerification(user,tokenEmail);
             throw new AccessDeniedException("Email not validated!");
         }
         String jwtToken = jwtService.generateToken(user, generateExtraClaims(user));
@@ -127,11 +131,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     public Boolean validateToken(HttpServletRequest request) {
         String jwtToken = jwtService.extractJwtFromRequest(request);
         Optional<JwtToken> jwtTokenVerify = jwtTokenRepository.findByToken(jwtToken);
-        if (jwtTokenVerify.isPresent() && Boolean.TRUE.equals(jwtTokenVerify.get().getIsValid()) && jwtTokenVerify.get().getExpiration().isAfter(LocalDateTime.now())) {
-            return true;
-        }else {
-            return false;
-        }
+        return jwtTokenVerify.isPresent() && Boolean.TRUE.equals(jwtTokenVerify.get().getIsValid()) && jwtTokenVerify.get().getExpiration().isAfter(LocalDateTime.now());
     }
 
     @Override
@@ -204,6 +204,44 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         }
 
         return null;
+    }
+
+    @Override
+    public NewUserProfileResponse updateEmailVerified(HttpServletRequest request) {
+        Boolean isValidToken = validateToken(request);
+        if (Boolean.FALSE.equals(isValidToken)) {
+            throw new AccessDeniedException("Invalid token");
+        }
+        String jwtToken = jwtService.extractJwtFromRequest(request);
+        String username = jwtService.extractUsername(jwtToken);
+        invalidTokenJwt(jwtToken);
+        User user = userService.findOneByUsername(username).orElseThrow(() -> new ObjectNotFoundException(ERROR_MESSAGE));
+        user.setEmailValid(true);
+        Optional<User> userUpdated = userService.updateUser(user);
+        if (userUpdated.isPresent()) {
+            UserProfileResponse userProfileResponse = new UserProfileResponse(
+                    userUpdated.get().getName(), userUpdated.get().getUsername(), userUpdated.get().getEmail(), userUpdated.get().getRole().getName(), userUpdated.get().getColorProfile()
+            );
+            AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+            String newToken = jwtService.generateToken(userUpdated.get(),generateExtraClaims(userUpdated.get()));
+            authenticationResponse.setTokenJwt(newToken);
+            saveUserAndToken(userUpdated.get(),newToken);
+            emailService.sendEmailWelcome(userUpdated.get());
+            return new NewUserProfileResponse(userProfileResponse, authenticationResponse);
+        }
+        return null;
+    }
+
+    @Override
+    public ValidTokenResponse resetPassword(String email) {
+        if (isValidEmail(email)){
+            User user = userService.findOneByEmail(email).orElseThrow(() -> new ObjectNotFoundException("Email not found!"));
+            String jwtToken = jwtService.generateTokenEmailValidate(user, generateExtraClaimsForEmail(user.getEmail()));
+            saveUserAndToken(user, jwtToken);
+            emailService.sendEmailPasswordReset(user,jwtToken);
+            return new ValidTokenResponse(true);
+        }
+        return new ValidTokenResponse(false);
     }
 
 }

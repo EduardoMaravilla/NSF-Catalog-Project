@@ -46,6 +46,8 @@ export const en = {
     loginAuthError: "Username or email or password incorrect",
     loginConnectError: "Fail connection to server",
     showPassword: "Show password",
+    loginEmailInvalidError:
+      "Your email has not been verified yet. Please check your inbox for a verification email. We have sent a new verification email.",
 
     //Modal Login
     successfulLogin: "Login successful",
@@ -143,9 +145,12 @@ export const en = {
     cAUsername: "Username",
     cAUsernameText: "Enter your desired username",
     cAUsernameMessage: "Username must be between 5 and 50 characters",
+    cAInvalidUsername: "Username already exists, please choose a different one",
     cAEmail: "Email",
     cAEmailText: "Enter your email address",
     cAEmailMessage: "Please enter a valid email address",
+    cAInvalidEmail:
+      "Email already exists, please use a different email address",
     cAPassword: "Password",
     cAPasswordText: "Enter your new password",
     cAPasswordMessage:
@@ -156,6 +161,8 @@ export const en = {
     cAAcceptTerms: "Accept Terms and Conditions.",
     cAShowTerms: "Show Terms and Conditions",
     cAConfirmButton: "Create Account",
+    cASuccesRegisterMessage:
+      "Registration successful, check your email for validation",
 
     //Terms and Conditions
     termsAndContitionsTitle: "Terms and Conditions",
@@ -167,5 +174,31 @@ export const en = {
       "We reserve the right to modify these terms at any time.",
     termsAndContitionsError:
       "You must accept the terms and conditions to proceed",
+
+    //Verify email
+
+    verifyEmailTitle: "Verify Your Email",
+    verifyEmailButton: "Click here to verify your email",
+    verifyEmailInvalidError:
+      "Please try again on the login page to request a new verification email.",
+
+    //Forgot password Page
+    forgotPasswordTitle: "Forgot your password?",
+    forgotPasswordText: "Enter your email address to recover your password.",
+    forgotPasswordButton: "Recover Password",
+    forgotPasswordInvalidError: "Please enter a valid email address",
+    forgotPasswordEmailInvalid:
+      "The email does not exist, please try registering again",
+    forgotPasswordSuccessMessage:
+      "We have sent you an email with instructions to recover your password.",
+
+    //Password Reset Page
+    forgotPasswordResetTitle: "Password Recovery",
+    forgotPasswordResetText:
+      "Enter the new password you want to use to log in.",
+    forgotPasswordResetButton: "Reset Password",
+    forgotPasswordResetInvalidError: "Please enter a valid password",
+    forgotPasswordResetSuccessMessage:
+      "Password successfully changed, you can now log in again.",
   },
 };

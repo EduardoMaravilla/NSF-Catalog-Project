@@ -1,28 +1,120 @@
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Card,
+  Alert,
+} from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FC, useState } from "react";
+import { useForm } from "../hooks/useForm";
+import { isApiResponseError, isValidEmail } from "../utilities/funcionExport";
+import { useReacerResetPassword } from "../services/racer/useReacerResetPassword";
 
-const ForgotPasswordPage = () => {
+type ForgotPasswordPageProps = {
+  t: (key: string) => string;
+};
+
+const initialForm = {
+  emailReset: "",
+};
+
+const ForgotPasswordPage: FC<ForgotPasswordPageProps> = ({ t }) => {
+  const [successRegister, setSuccessRegister] = useState<boolean>(false);
+  const [failSendEmail, setFailSendEmail] = useState<boolean>(false);
+  const [emailFail, setEmailFail] = useState<boolean>(false);
+  const { formState, onInputChange, resetForm } = useForm(initialForm);
+  const { emailReset } = formState;
+  const {chargeEmailInOptions,getFetch} = useReacerResetPassword();
+
+  const onResetPassword = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if(!isValidEmail(emailReset)){
+       setEmailFail(true);
+       return;
+    }
+    chargeEmailInOptions(emailReset);
+    const state = await getFetch();
+    if (isApiResponseError(state.data)) {
+         setFailSendEmail(true);
+    }
+  }
+
   return (
-    <Container 
-      className="d-flex justify-content-center align-items-center" 
-      style={{ height: '70vh' }}
-    >
+    <Container>
       <Row className="w-100">
         <Col md={6} lg={4} className="mx-auto">
-          <h2 className="text-center mb-4">Olvidé mi Contraseña</h2>
-          <Form>
-            <Form.Group controlId="formBasicEmail">
-              <Form.Label>Correo Electrónico</Form.Label>
-              <Form.Control type="email" placeholder="Ingrese su correo electrónico" required />
-              <Form.Text className="text-muted">
-                Recibirá un enlace para restablecer su contraseña en su correo electrónico.
-              </Form.Text>
-            </Form.Group>
-            
-            <Button variant="primary" type="submit" className="w-100 mt-3">
-              Enviar Enlace de Restablecimiento
-            </Button>
-          </Form>
+          <Card>
+            <Card.Header className="text-center fw-bold fs-2">
+              {t("forgotPasswordTitle")}
+            </Card.Header>
+            <Card.Body>
+              <Form onSubmit={async (event) => await onResetPassword(event) }>
+                {emailFail ? (
+                  <Form.Group>
+                    <Form.Label className="d-flex justify-content-center align-items-center text-center">
+                      <Alert
+                        variant="warning"
+                        onClose={() => setEmailFail(false)}
+                        dismissible
+                      >
+                        <p>{t("forgotPasswordInvalidError")}</p>
+                      </Alert>
+                    </Form.Label>
+                  </Form.Group>
+                ) : null}
+                {failSendEmail ? (
+                  <Form.Group>
+                    <Form.Label className="d-flex justify-content-center align-items-center text-center">
+                      <Alert
+                        variant="danger"
+                        onClose={() => setFailSendEmail(false)}
+                        dismissible
+                      >
+                        <p>{t("forgotPasswordEmailinvalid")}</p>
+                      </Alert>
+                    </Form.Label>
+                  </Form.Group>
+                ) : null}
+                {successRegister ? (
+                  <Form.Group>
+                    <Form.Label className="d-flex justify-content-center align-items-center text-center">
+                      <Alert
+                        variant="success"
+                        onClose={() => setSuccessRegister(false)}
+                        dismissible
+                      >
+                        <p>{t("forgotPasswordSuccessMessage")}</p>
+                      </Alert>
+                    </Form.Label>
+                  </Form.Group>
+                ) : null}
+                <Form.Group>
+                  <Form.Label htmlFor="emailReset" className="fw-bold">
+                    {t("cAEmail")}
+                  </Form.Label>
+                  <Form.Control
+                    id="emailReset"
+                    name="emailReset"
+                    value={emailReset}
+                    type="email"
+                    placeholder={t("cAEmailText")}
+                    onChange={onInputChange}
+                    required
+                    autoComplete="off"
+                  />
+                  <Form.Text className="text-muted">
+                    {t("forgotPasswordText")}
+                  </Form.Text>
+                </Form.Group>
+                <Button variant="primary" type="submit" className="w-100 mt-3">
+                  {t("forgotPasswordButton")}
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
     </Container>

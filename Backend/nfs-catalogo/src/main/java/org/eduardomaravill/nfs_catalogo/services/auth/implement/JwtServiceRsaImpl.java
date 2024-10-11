@@ -37,10 +37,29 @@ public class JwtServiceRsaImpl implements IJwtService {
     @Value("${security.jwt.token.expiration-in-minutes}")
     private Long expirationInMinutes;
 
+    @Value("${security.jwt.token.email.expiration-in-minutes}")
+    private Long expirationEmailInMinutes;
+
     @Override
     public String generateToken(UserDetails userDetails, Map<String, Object> extraClaims) {
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDateTime expiresAt = issuedAt.plusMinutes(expirationInMinutes);
+        return Jwts.builder()
+                .header()
+                .type("JWT")
+                .and()
+                .subject(userDetails.getUsername())
+                .issuedAt(localDateTimeToDate(issuedAt))
+                .expiration(localDateTimeToDate(expiresAt))
+                .claims(extraClaims)
+                .signWith(getPrivateKey(), Jwts.SIG.RS256)
+                .compact();
+    }
+
+    @Override
+    public String generateTokenEmailValidate(UserDetails userDetails, Map<String, Object> extraClaims) {
+        LocalDateTime issuedAt = LocalDateTime.now();
+        LocalDateTime expiresAt = issuedAt.plusMinutes(expirationEmailInMinutes);
         return Jwts.builder()
                 .header()
                 .type("JWT")

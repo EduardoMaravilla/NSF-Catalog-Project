@@ -49,6 +49,8 @@ public class UserServiceImpl implements IUserService {
         Role defaultRole = roleService.findDefaultRole()
                 .orElseThrow(()-> new ObjectNotFoundException("Default role not found"));
         user.setRole(defaultRole);
+        user.setEmailValid(false);
+        user.setColorProfile("#000000");
         return userRepository.save(user);
     }
 

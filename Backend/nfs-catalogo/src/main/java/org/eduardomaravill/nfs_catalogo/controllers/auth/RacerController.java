@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.NewUserProfileResponse;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.UserEditProfileRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.UserProfileResponse;
+import org.eduardomaravill.nfs_catalogo.dtos.auth.ValidTokenResponse;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UserRegistered;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UserSaveDto;
 import org.eduardomaravill.nfs_catalogo.services.auth.IAuthenticationService;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/racers")
@@ -29,9 +32,9 @@ public class RacerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserRegistered> registerOneRacer(@RequestBody UserSaveDto newUser){
-        UserRegistered userRegistered = authenticationService.registerOneRacer(newUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userRegistered);
+    public ResponseEntity<ValidTokenResponse> registerOneRacer(@RequestBody UserSaveDto newUser){
+        ValidTokenResponse validTokenResponse = authenticationService.registerOneRacer(newUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(validTokenResponse);
     }
 
     @PostMapping("/update-profile")
@@ -39,4 +42,18 @@ public class RacerController {
         NewUserProfileResponse newUserProfileResponse = authenticationService.updateProfileOneRacer(request,userEditProfileRequest);
         return ResponseEntity.ok(newUserProfileResponse);
     }
+
+    @PostMapping("/profile-verified")
+    public ResponseEntity<NewUserProfileResponse> updateProfileVerifier(HttpServletRequest request){
+        NewUserProfileResponse newUserProfileResponse = authenticationService.updateEmailVerified(request);
+        return ResponseEntity.ok(newUserProfileResponse);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<ValidTokenResponse> resetPassword(@RequestBody Map<String, String> requestBody){
+        String email = requestBody.get("email");
+        ValidTokenResponse validTokenResponse = authenticationService.resetPassword(email);
+        return ResponseEntity.ok(validTokenResponse);
+    }
+
 }

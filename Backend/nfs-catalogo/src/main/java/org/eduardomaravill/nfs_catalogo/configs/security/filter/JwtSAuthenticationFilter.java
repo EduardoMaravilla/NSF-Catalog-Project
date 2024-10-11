@@ -83,6 +83,7 @@ public class JwtSAuthenticationFilter extends OncePerRequestFilter {
 
     private void updateTokenStatus(JwtToken token) {
         token.setIsValid(false);
+        token.setExpiration(LocalDateTime.now());
         jwtTokenRepository.save(token);
     }
 }

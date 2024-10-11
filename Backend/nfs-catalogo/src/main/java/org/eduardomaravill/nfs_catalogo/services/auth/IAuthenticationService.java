@@ -7,11 +7,13 @@ import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UserSaveDto;
 import org.eduardomaravill.nfs_catalogo.models.users_models.User;
 
 public interface IAuthenticationService {
-    UserRegistered registerOneRacer(UserSaveDto newUser);
+    ValidTokenResponse registerOneRacer(UserSaveDto newUser);
     AuthenticationResponse login(AuthenticationRequest autRequest);
     Boolean validateToken(HttpServletRequest request);
     UserProfileResponse findLoggedInUser();
     void logout(HttpServletRequest request);
-
     NewUserProfileResponse updateProfileOneRacer(HttpServletRequest request,UserEditProfileRequest userEditProfileRequest);
+    NewUserProfileResponse updateEmailVerified(HttpServletRequest request);
+
+    ValidTokenResponse resetPassword(String email);
 }

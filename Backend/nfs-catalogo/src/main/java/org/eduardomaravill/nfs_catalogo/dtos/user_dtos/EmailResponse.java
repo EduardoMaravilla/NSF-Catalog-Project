@@ -1,5 +1,6 @@
 package org.eduardomaravill.nfs_catalogo.dtos.user_dtos;
 
+import com.mailjet.client.transactional.SendContact;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 public class EmailResponse {
     private String name;
-    private List<String> to;
-    private String from;
+    private List<SendContact> to;
+    private SendContact from;
     private String subject;
     private String body;
-    private List<String> cc;
-    private List<String> bcc;
+    private List<SendContact> cc;
+    private List<SendContact> bcc;
 }

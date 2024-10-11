@@ -46,6 +46,8 @@ export const es = {
     loginAuthError: "Usuario o email o contraseña incorrecta",
     loginConnectError: "Falla conexión con el servidor",
     showPassword: "Mostrar contraseña",
+    loginEmailInvalidError:
+      "Tu correo electrónico aún no ha sido verificado. Por favor, revisa tu bandeja de entrada para encontrar el correo de verificación. Hemos enviado un nuevo correo de verificación.",
 
     //Modal Login
     successfulLogin: "Inicio de session exitoso",
@@ -144,10 +146,14 @@ export const es = {
     cAUsernameText: "Introduce tu nombre de usuario deseado",
     cAUsernameMessage:
       "El nombre de usuario debe tener entre 5 y 50 caracteres",
+    cAInvalidUsername:
+      "El nombre de usuario ya existe, por favor elige uno diferente",
     cAEmail: "Correo Electrónico",
     cAEmailText: "Introduce tu dirección de correo electrónico",
     cAEmailMessage:
       "Por favor, introduce una dirección de correo electrónico válida",
+    cAInvalidEmail:
+      "El correo electrónico ya existe, por favor utiliza una dirección de correo diferente",
     cAPassword: "Contraseña",
     cAPasswordText: "Introduce tu nueva contraseña",
     cAPasswordMessage:
@@ -155,15 +161,50 @@ export const es = {
     cAConfirmPassword: "Confirmar Contraseña",
     cAConfirmPasswordText: "Vuelve a introducir tu contraseña",
     cAConfirmPasswordMessage: "Las contraseñas no coinciden",
-    cAAcceptTerms:"Aceptar Terminos y condiciones.",
+    cAAcceptTerms: "Aceptar Terminos y condiciones.",
     cAShowTerms: "Mostrar Terminos y condiciones",
     cAConfirmButton: "Crear Cuenta",
-    
+    cASuccesRegisterMessage:
+      "Registro exitoso, revisa tu correo para la validación",
+
     //Terms and Conditions
     termsAndContitionsTitle: "Términos y Condiciones",
-    termsAndContitionsIntro: "Por favor, lea cuidadosamente nuestros términos y condiciones antes de utilizar nuestro servicio.",
-    termsAndContitionsAcceptance: "Al utilizar nuestro servicio, usted acepta cumplir con estos términos y condiciones.",
-    termsAndContitionsChanges: "Nos reservamos el derecho de modificar estos términos en cualquier momento.",
-    termsAndContitionsError: "Debe aceptar los términos y condiciones para continuar",
+    termsAndContitionsIntro:
+      "Por favor, lea cuidadosamente nuestros términos y condiciones antes de utilizar nuestro servicio.",
+    termsAndContitionsAcceptance:
+      "Al utilizar nuestro servicio, usted acepta cumplir con estos términos y condiciones.",
+    termsAndContitionsChanges:
+      "Nos reservamos el derecho de modificar estos términos en cualquier momento.",
+    termsAndContitionsError:
+      "Debe aceptar los términos y condiciones para continuar",
+
+    //Verify email
+
+    verifyEmailTitle: "Verificación de Correo Electrónico",
+    verifyEmailButton: "Haz clic aquí para verificar tu correo electrónico",
+    verifyEmailInvalidError:
+      "Por favor, intenta nuevamente en la página de inicio de sesión para solicitar un nuevo correo de verificación.",
+
+    //Forgot password Page
+    forgotPasswordTitle: "¿Has olvidado tu contraseña?",
+    forgotPasswordText:
+      "Introduce tu dirección de correo electrónico para recuperar tu contraseña.",
+    forgotPasswordButton: "Recuperar Contraseña",
+    forgotPasswordInvalidError:
+      "Por favor, introduce una dirección de correo electrónico válida",
+    forgotPasswordEmailinvalid:
+      "El correo electrónico no existe, prueba registrandote nuevamente",
+    forgotPasswordSuccessMessage:
+      "Te hemos enviado un correo electrónico con instrucciones para recuperar tu contraseña.",
+
+    //Password Reset Page
+    forgotPasswordResetTitle: "Recuperación de Contraseña",
+    forgotPasswordResetText:
+      "Introduce la nueva contraseña que deseas utilizar para iniciar sesión.",
+    forgotPasswordResetButton: "Recuperar Contraseña",
+    forgotPasswordResetInvalidError:
+      "Por favor, introduce una contraseña válida",
+    forgotPasswordResetSuccessMessage:
+      "Contraseña cambiada exitosamente, ahora puedes iniciar sesión nuevamente.",
   },
 };

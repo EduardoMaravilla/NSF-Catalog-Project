@@ -19,6 +19,7 @@ import { AuthenticationContext } from "./context/auth/AuthenticationContext";
 
 import { useAuth } from "./context/auth/useAuth";
 import ProtectedRoute from "./context/auth/ProtectedRoute";
+import { VerifyEmailPage } from "./pages/VerifyEmailPage";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -45,7 +46,6 @@ function App() {
             </div>
           ) : null}
           <div className="content p-3 flex-grow-1">
-
             <Routes>
               {/* public routes */}
               <Route
@@ -70,7 +70,18 @@ function App() {
                   isAuthenticated ? (
                     <Navigate to="Home" />
                   ) : (
-                    <ForgotPasswordPage />
+                    <ForgotPasswordPage t={t} />
+                  )
+                }
+              />
+
+              <Route
+                path="/verify-email"
+                element={
+                  isAuthenticated ? (
+                    <Navigate to="Home" />
+                  ) : (
+                    <VerifyEmailPage t={t} />
                   )
                 }
               />
@@ -81,7 +92,10 @@ function App() {
 
               {/* private routes */}
               <Route element={<ProtectedRoute />}>
-                <Route path="/create-build" element={<CreateBuildPage t={t}/>} />
+                <Route
+                  path="/create-build"
+                  element={<CreateBuildPage t={t} />}
+                />
                 <Route
                   path="/community-builds"
                   element={<CommunityBuildsPage />}
@@ -94,9 +108,7 @@ function App() {
               </Route>
               <Route
                 path="*"
-                element={
-                  <Navigate to={isAuthenticated ? "/home" : "/login"} />
-                }
+                element={<Navigate to={isAuthenticated ? "/home" : "/login"} />}
               />
             </Routes>
           </div>

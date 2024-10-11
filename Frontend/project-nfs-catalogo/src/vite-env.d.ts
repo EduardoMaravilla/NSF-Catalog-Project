@@ -7,8 +7,11 @@ interface ImportMetaEnv {
   readonly VITE_API_URL_Auht_Logout: string;
   readonly VITE_API_URL_Auht_Validtoken: string;
   readonly VITE_API_URL_Auht_Profile: string;
-  /*RAcer*/
+  /*Racer*/
+  readonly VITE_API_URL_Reset_Password: string;
+  readonly VITE_API_URL_Racer_Register : string;
   readonly VITE_API_URL_Racer_Update: string;
+  readonly VITE_API_URL_Validate_Email: string;
   /*Auxiliaries*/
   readonly VITE_API_URL_Auxiliaries: string;
   /*CarConfig*/

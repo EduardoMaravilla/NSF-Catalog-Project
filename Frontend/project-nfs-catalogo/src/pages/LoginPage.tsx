@@ -22,6 +22,7 @@ import {
   isApiResponseError,
   isAuthenticationResponse,
 } from "../utilities/funcionExport";
+import { ApiResponseError } from "../types/TypesErrors";
 
 type loginProps = {
   t: (key: string) => string;
@@ -36,6 +37,7 @@ export const LoginPage: React.FC<loginProps> = ({ t }) => {
   const { formState, onInputChange, resetForm } =
     useForm<AuthenticationRequest>(initialForm);
   const [showAuthError, setShowAuthError] = useState<boolean>(false);
+  const [showEmailInvalidError, setShowEmailInvalidError] = useState<boolean>(false);
   const [showConnectError, setShowConnectAuthError] = useState<boolean>(false);
   const authenticationRequest = formState;
   const { usernameOrEmail, password } = authenticationRequest;
@@ -54,12 +56,19 @@ export const LoginPage: React.FC<loginProps> = ({ t }) => {
   const onSubmitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLogined(true);
+    setShowPassword(false);
     chargeAuthRequestInOptions(formState);
     const state = await getFetch();
+    console.log(state);
     if (isApiResponseError(state.data)) {
       setIsLogined(false);
       resetForm();
-      setShowAuthError(true);
+      const errorResponse = state.data as ApiResponseError;
+      if(errorResponse.backendMessage === "Email not validated!"){
+       setShowEmailInvalidError(true);
+      }else {
+        setShowAuthError(true);
+      }      
     } else if (isAuthenticationResponse(state.data)) {
       const authResponse = state.data as AuthenticationResponse;
       setShowSuccesfulModal(true);
@@ -99,6 +108,19 @@ export const LoginPage: React.FC<loginProps> = ({ t }) => {
         <Col md={6} lg={4} className="mx-auto">
           <h2 className="text-center mb-4 fs-1">{t("initLogin")}</h2>
           <Form onSubmit={async (event) => await onSubmitLogin(event)}>
+          {showEmailInvalidError ? (
+              <Form.Group>
+                <Form.Label className="d-flex justify-content-center align-items-center text-center">
+                  <Alert
+                    variant="warning"
+                    onClose={() => setShowEmailInvalidError(false)}
+                    dismissible
+                  >
+                    <p>{t("loginEmailInvalidError")}</p>
+                  </Alert>
+                </Form.Label>
+              </Form.Group>
+            ) : null}
             {showAuthError ? (
               <Form.Group>
                 <Form.Label className="d-flex justify-content-center align-items-center">

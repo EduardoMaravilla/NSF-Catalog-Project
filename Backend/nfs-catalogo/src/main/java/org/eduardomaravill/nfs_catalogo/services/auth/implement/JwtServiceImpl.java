@@ -44,6 +44,12 @@ public class JwtServiceImpl implements IJwtService {
                 .compact();
     }
 
+    @Override
+    public String generateTokenEmailValidate(UserDetails userDetails, Map<String, Object> extraClaims) {
+        return "";
+    }
+
+
     private SecretKey generateKey(){
         byte[] bytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(bytes);
