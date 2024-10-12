@@ -81,6 +81,20 @@ public class MailJetServiceImpl implements IEmailService {
         sendEmail(emailResponse);
     }
 
+    @Override
+    public void sendEmailResetPasswordSuccess(User user) {
+        EmailResponse emailResponse = new EmailResponse();
+        List<SendContact> to = new ArrayList<>();
+        to.add(new SendContact(user.getEmail(),user.getName()));
+        emailResponse.setTo(to);
+        emailResponse.setCc(Collections.emptyList());
+        emailResponse.setBcc(Collections.emptyList());
+        emailResponse.setFrom(new SendContact(username,"NFS-CATALOG"));
+        emailResponse.setBody(loadHtmlBodyResetPasswordSuccess(user.getName()));
+        emailResponse.setSubject("Password reset success");
+        sendEmail(emailResponse);
+    }
+
     private void sendEmail(EmailResponse emailResponse) {
         TransactionalEmail message = TransactionalEmail
                 .builder()
@@ -127,5 +141,11 @@ public class MailJetServiceImpl implements IEmailService {
         context.setVariable("username", username);
         context.setVariable("token", token);
         return templateEngine.process("emailResetPassword.html", context);
+    }
+
+    private String loadHtmlBodyResetPasswordSuccess(String username) {
+        Context context = new Context();
+        context.setVariable("username", username);
+        return templateEngine.process("emailResetPasswordSuccess.html", context);
     }
 }

@@ -192,7 +192,7 @@ export const es = {
     forgotPasswordButton: "Recuperar Contraseña",
     forgotPasswordInvalidError:
       "Por favor, introduce una dirección de correo electrónico válida",
-    forgotPasswordEmailinvalid:
+    forgotPasswordEmailInvalid:
       "El correo electrónico no existe, prueba registrandote nuevamente",
     forgotPasswordSuccessMessage:
       "Te hemos enviado un correo electrónico con instrucciones para recuperar tu contraseña.",

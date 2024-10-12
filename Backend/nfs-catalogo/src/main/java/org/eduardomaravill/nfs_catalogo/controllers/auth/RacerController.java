@@ -56,4 +56,11 @@ public class RacerController {
         return ResponseEntity.ok(validTokenResponse);
     }
 
+    @PostMapping("/update-password")
+    public ResponseEntity<ValidTokenResponse> updatePassword(HttpServletRequest request, @RequestBody Map<String, String> requestBody){
+        String password = requestBody.get("password");
+        ValidTokenResponse validTokenResponse = authenticationService.updatePassword(request, password);
+        return ResponseEntity.ok(validTokenResponse);
+    }
+
 }

@@ -12,4 +12,6 @@ public interface IUserService {
     Optional<User> findOneByEmail(String email);
 
     Optional<User> updateUser(User user);
+
+    Optional<User> updatePasswordUser(User user, String password);
 }

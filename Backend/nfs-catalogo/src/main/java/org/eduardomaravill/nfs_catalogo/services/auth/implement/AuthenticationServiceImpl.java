@@ -2,7 +2,6 @@ package org.eduardomaravill.nfs_catalogo.services.auth.implement;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.*;
-import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UserRegistered;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UserSaveDto;
 import org.eduardomaravill.nfs_catalogo.exceptions.ObjectNotFoundException;
 import org.eduardomaravill.nfs_catalogo.exceptions.UsernameOrEmailDuplicateException;
@@ -239,6 +238,24 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
             String jwtToken = jwtService.generateTokenEmailValidate(user, generateExtraClaimsForEmail(user.getEmail()));
             saveUserAndToken(user, jwtToken);
             emailService.sendEmailPasswordReset(user,jwtToken);
+            return new ValidTokenResponse(true);
+        }
+        return new ValidTokenResponse(false);
+    }
+
+    @Override
+    public ValidTokenResponse updatePassword(HttpServletRequest request, String password) {
+        Boolean isValidToken = validateToken(request);
+        if (Boolean.FALSE.equals(isValidToken)) {
+            throw new AccessDeniedException("Invalid token");
+        }
+        String jwtToken = jwtService.extractJwtFromRequest(request);
+        String username = jwtService.extractUsername(jwtToken);
+        invalidTokenJwt(jwtToken);
+        User user = userService.findOneByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User not found!"));
+        Optional<User> userUpdated = userService.updatePasswordUser(user,password);
+        if (userUpdated.isPresent()){
+            emailService.sendEmailResetPasswordSuccess(userUpdated.get());
             return new ValidTokenResponse(true);
         }
         return new ValidTokenResponse(false);

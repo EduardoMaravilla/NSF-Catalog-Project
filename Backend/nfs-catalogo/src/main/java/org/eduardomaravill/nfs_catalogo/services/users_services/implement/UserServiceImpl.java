@@ -69,6 +69,12 @@ public class UserServiceImpl implements IUserService {
         return Optional.of(userRepository.save(user));
     }
 
+    @Override
+    public Optional<User> updatePasswordUser(User user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        return Optional.of(userRepository.save(user));
+    }
+
     private void validatePassword(UserSaveDto newUser) {
         if (!newUser.getPassword().equals(newUser.getRepeatedPassword())){
             throw new InvalidPasswordException("Passwords do not match");

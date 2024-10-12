@@ -14,6 +14,6 @@ public interface IAuthenticationService {
     void logout(HttpServletRequest request);
     NewUserProfileResponse updateProfileOneRacer(HttpServletRequest request,UserEditProfileRequest userEditProfileRequest);
     NewUserProfileResponse updateEmailVerified(HttpServletRequest request);
-
     ValidTokenResponse resetPassword(String email);
+    ValidTokenResponse updatePassword(HttpServletRequest request, String password);
 }

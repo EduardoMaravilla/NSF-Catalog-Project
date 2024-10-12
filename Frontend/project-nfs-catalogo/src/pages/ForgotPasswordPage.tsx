@@ -7,7 +7,6 @@ import {
   Card,
   Alert,
 } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { FC, useState } from "react";
 import { useForm } from "../hooks/useForm";
 import { isApiResponseError, isValidEmail } from "../utilities/funcionExport";
@@ -39,13 +38,16 @@ const ForgotPasswordPage: FC<ForgotPasswordPageProps> = ({ t }) => {
     const state = await getFetch();
     if (isApiResponseError(state.data)) {
          setFailSendEmail(true);
+    }else {
+       setSuccessRegister(true);
+       resetForm();
     }
   }
 
   return (
     <Container>
-      <Row className="w-100">
-        <Col md={6} lg={4} className="mx-auto">
+      <Row>
+        <Col>
           <Card>
             <Card.Header className="text-center fw-bold fs-2">
               {t("forgotPasswordTitle")}
@@ -73,7 +75,7 @@ const ForgotPasswordPage: FC<ForgotPasswordPageProps> = ({ t }) => {
                         onClose={() => setFailSendEmail(false)}
                         dismissible
                       >
-                        <p>{t("forgotPasswordEmailinvalid")}</p>
+                        <p>{t("forgotPasswordEmailInvalid")}</p>
                       </Alert>
                     </Form.Label>
                   </Form.Group>

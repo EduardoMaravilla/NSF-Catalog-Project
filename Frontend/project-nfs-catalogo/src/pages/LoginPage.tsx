@@ -59,7 +59,6 @@ export const LoginPage: React.FC<loginProps> = ({ t }) => {
     setShowPassword(false);
     chargeAuthRequestInOptions(formState);
     const state = await getFetch();
-    console.log(state);
     if (isApiResponseError(state.data)) {
       setIsLogined(false);
       resetForm();

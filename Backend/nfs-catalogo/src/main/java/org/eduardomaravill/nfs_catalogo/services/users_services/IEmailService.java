@@ -8,4 +8,6 @@ public interface IEmailService {
     void sendEmailPasswordReset(User user, String jwtToken);
 
     void sendEmailWelcome(User user);
+
+    void  sendEmailResetPasswordSuccess(User user);
 }

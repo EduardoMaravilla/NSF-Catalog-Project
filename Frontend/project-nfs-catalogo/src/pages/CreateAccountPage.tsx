@@ -8,7 +8,6 @@ import {
   Spinner,
   Alert,
 } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { FC, useState } from "react";
 import { TermsAndConditionModal } from "../components/modals-components/TermsAndConditionModal";
 import { UserSaveDto } from "../types/TypeConctact";
