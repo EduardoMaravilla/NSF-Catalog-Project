@@ -1,5 +1,6 @@
 package org.eduardomaravill.nfs_catalogo.services.users_services.implement;
 
+import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UpdatePasswordRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UserSaveDto;
 import org.eduardomaravill.nfs_catalogo.exceptions.InvalidPasswordException;
 import org.eduardomaravill.nfs_catalogo.exceptions.ObjectNotFoundException;
@@ -40,7 +41,7 @@ public class UserServiceImpl implements IUserService {
         if (findOneByEmail(newUser.getEmail()).isPresent()) {
             throw new UsernameOrEmailDuplicateException("Email already exists");
         }
-        validatePassword(newUser);
+        validatePassword(newUser.getPassword(), newUser.getRepeatedPassword());
         User user = new User();
         user.setName(newUser.getName());
         user.setUsername(newUser.getUsername());
@@ -70,16 +71,17 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Optional<User> updatePasswordUser(User user, String password) {
-        user.setPassword(passwordEncoder.encode(password));
+    public Optional<User> updatePasswordUser(User user, UpdatePasswordRequest updatePasswordRequest) {
+        validatePassword(updatePasswordRequest.getPassword(), updatePasswordRequest.getConfirmPassword());
+        user.setPassword(passwordEncoder.encode(updatePasswordRequest.getPassword()));
         return Optional.of(userRepository.save(user));
     }
 
-    private void validatePassword(UserSaveDto newUser) {
-        if (!newUser.getPassword().equals(newUser.getRepeatedPassword())){
+    private void validatePassword(String password, String repeatedPassword) {
+        if (!password.equals(repeatedPassword)){
             throw new InvalidPasswordException("Passwords do not match");
         }
-        if (!StringUtils.hasText(newUser.getPassword()) || !StringUtils.hasText(newUser.getRepeatedPassword())) {
+        if (!StringUtils.hasText(password) || !StringUtils.hasText(repeatedPassword)) {
             throw new InvalidPasswordException("Passwords do not match");
         }
     }

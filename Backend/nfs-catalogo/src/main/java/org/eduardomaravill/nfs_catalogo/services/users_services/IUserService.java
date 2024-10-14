@@ -1,5 +1,6 @@
 package org.eduardomaravill.nfs_catalogo.services.users_services;
 
+import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UpdatePasswordRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UserSaveDto;
 import org.eduardomaravill.nfs_catalogo.models.users_models.User;
 
@@ -13,5 +14,5 @@ public interface IUserService {
 
     Optional<User> updateUser(User user);
 
-    Optional<User> updatePasswordUser(User user, String password);
+    Optional<User> updatePasswordUser(User user, UpdatePasswordRequest updatePasswordRequest);
 }

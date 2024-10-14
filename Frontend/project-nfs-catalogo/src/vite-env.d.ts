@@ -12,6 +12,7 @@ interface ImportMetaEnv {
   readonly VITE_API_URL_Racer_Register : string;
   readonly VITE_API_URL_Racer_Update: string;
   readonly VITE_API_URL_Validate_Email: string;
+  readonly VITE_API_URL_Update_Password: string;
   /*Auxiliaries*/
   readonly VITE_API_URL_Auxiliaries: string;
   /*CarConfig*/
@@ -40,6 +41,9 @@ interface ImportMetaEnv {
   readonly VITE_API_URL_Turbos: string;
   /*TurboTypes*/
   readonly VITE_API_URL_TurboTypes: string;
+
+  /*ReCaptcha Public_Key*/
+  readonly VITE_API_Public_Key_ReCaptcha: string;
 }
 
 interface ImportMeta {

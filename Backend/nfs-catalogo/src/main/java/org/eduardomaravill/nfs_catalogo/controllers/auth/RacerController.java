@@ -3,9 +3,8 @@ package org.eduardomaravill.nfs_catalogo.controllers.auth;
 import jakarta.servlet.http.HttpServletRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.NewUserProfileResponse;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.UserEditProfileRequest;
-import org.eduardomaravill.nfs_catalogo.dtos.auth.UserProfileResponse;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.ValidTokenResponse;
-import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UserRegistered;
+import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UpdatePasswordRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UserSaveDto;
 import org.eduardomaravill.nfs_catalogo.services.auth.IAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,10 +56,16 @@ public class RacerController {
     }
 
     @PostMapping("/update-password")
-    public ResponseEntity<ValidTokenResponse> updatePassword(HttpServletRequest request, @RequestBody Map<String, String> requestBody){
-        String password = requestBody.get("password");
-        ValidTokenResponse validTokenResponse = authenticationService.updatePassword(request, password);
+    public ResponseEntity<ValidTokenResponse> updatePassword(HttpServletRequest request,@RequestBody UpdatePasswordRequest updatePasswordRequest){
+        ValidTokenResponse validTokenResponse = authenticationService.updatePassword(request, updatePasswordRequest);
         return ResponseEntity.ok(validTokenResponse);
+    }
+
+    @PostMapping("/verify-recaptcha-token")
+    public ResponseEntity<ValidTokenResponse> verifyReCaptchaToken(@RequestBody Map<String, String> requestBody){
+        String token = requestBody.get("token");
+        ValidTokenResponse response = authenticationService.verifyReCaptchaToken(token);
+        return ResponseEntity.ok(response);
     }
 
 }

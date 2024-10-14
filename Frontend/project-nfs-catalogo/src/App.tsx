@@ -20,6 +20,7 @@ import { AuthenticationContext } from "./context/auth/AuthenticationContext";
 import { useAuth } from "./context/auth/useAuth";
 import ProtectedRoute from "./context/auth/ProtectedRoute";
 import { VerifyEmailPage } from "./pages/VerifyEmailPage";
+import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -51,14 +52,14 @@ function App() {
               <Route
                 path="/login"
                 element={
-                  isAuthenticated ? <Navigate to="Home" /> : <LoginPage t={t} />
+                  isAuthenticated ? <Navigate to="/home" /> : <LoginPage t={t} />
                 }
               />
               <Route
                 path="/create-account"
                 element={
                   isAuthenticated ? (
-                    <Navigate to="Home" />
+                    <Navigate to="/home" />
                   ) : (
                     <CreateAccountPage t={t} />
                   )
@@ -68,9 +69,19 @@ function App() {
                 path="/forgot-password"
                 element={
                   isAuthenticated ? (
-                    <Navigate to="Home" />
+                    <Navigate to="/home" />
                   ) : (
                     <ForgotPasswordPage t={t} />
+                  )
+                }
+              />
+              <Route
+                path="/update-password"
+                element={
+                  isAuthenticated ? (
+                    <Navigate to="/home" />
+                  ) : (
+                    <UpdatePasswordPage t={t} />
                   )
                 }
               />
@@ -79,14 +90,14 @@ function App() {
                 path="/verify-email"
                 element={
                   isAuthenticated ? (
-                    <Navigate to="Home" />
+                    <Navigate to="/home" />
                   ) : (
                     <VerifyEmailPage t={t} />
                   )
                 }
               />
 
-              <Route path="/Home" element={<HomePage />} />
+              <Route path="/home" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
 
@@ -107,7 +118,7 @@ function App() {
                 <Route path="/profile" element={<ProfilePage t={t} />} />
               </Route>
               <Route
-                path="*"
+                path="/*"
                 element={<Navigate to={isAuthenticated ? "/home" : "/login"} />}
               />
             </Routes>

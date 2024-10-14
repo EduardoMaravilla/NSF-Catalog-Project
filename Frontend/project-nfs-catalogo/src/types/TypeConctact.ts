@@ -47,3 +47,8 @@ export interface UserSaveDto{
   password: string;
   repeatedPassword: string;
 }
+
+export interface UpdatePasswordRequest {
+  password : string;
+  confirmPassword: string;
+}

@@ -1,4 +1,4 @@
-package org.eduardomaravill.nfs_catalogo.dtos.auth;
+package org.eduardomaravill.nfs_catalogo.dtos.user_dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationRequest {
-    @Size(max = 50, min = 5)
-    @NotBlank
-    private String usernameOrEmail;
+public class UpdatePasswordRequest {
 
     @Size(max = 128,min = 8)
     @NotBlank
     private String password;
+
+    @Size(max = 128,min = 8)
+    @NotBlank
+    private String confirmPassword;
 }

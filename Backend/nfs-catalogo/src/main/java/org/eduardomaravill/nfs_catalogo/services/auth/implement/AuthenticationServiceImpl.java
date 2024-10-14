@@ -2,6 +2,7 @@ package org.eduardomaravill.nfs_catalogo.services.auth.implement;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.*;
+import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UpdatePasswordRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UserSaveDto;
 import org.eduardomaravill.nfs_catalogo.exceptions.ObjectNotFoundException;
 import org.eduardomaravill.nfs_catalogo.exceptions.UsernameOrEmailDuplicateException;
@@ -11,6 +12,7 @@ import org.eduardomaravill.nfs_catalogo.repositories.users_respositories.IJwtTok
 import org.eduardomaravill.nfs_catalogo.services.auth.IAuthenticationService;
 import org.eduardomaravill.nfs_catalogo.services.auth.IJwtService;
 import org.eduardomaravill.nfs_catalogo.services.users_services.IEmailService;
+import org.eduardomaravill.nfs_catalogo.services.users_services.IReCaptchaService;
 import org.eduardomaravill.nfs_catalogo.services.users_services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -44,14 +46,17 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
     private final IEmailService emailService;
 
+    private final IReCaptchaService reCaptchaService;
+
 
     @Autowired
-    public AuthenticationServiceImpl(IUserService userService, IJwtService jwtService, IJwtTokenRepository jwtTokenRepository, AuthenticationManager authenticationManager, IEmailService emailService) {
+    public AuthenticationServiceImpl(IUserService userService, IJwtService jwtService, IJwtTokenRepository jwtTokenRepository, AuthenticationManager authenticationManager, IEmailService emailService, IReCaptchaService reCaptchaService) {
         this.userService = userService;
         this.jwtService = jwtService;
         this.jwtTokenRepository = jwtTokenRepository;
         this.authenticationManager = authenticationManager;
         this.emailService = emailService;
+        this.reCaptchaService = reCaptchaService;
     }
 
     @Override
@@ -244,7 +249,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     }
 
     @Override
-    public ValidTokenResponse updatePassword(HttpServletRequest request, String password) {
+    public ValidTokenResponse updatePassword(HttpServletRequest request, UpdatePasswordRequest updatePasswordRequest) {
         Boolean isValidToken = validateToken(request);
         if (Boolean.FALSE.equals(isValidToken)) {
             throw new AccessDeniedException("Invalid token");
@@ -253,7 +258,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         String username = jwtService.extractUsername(jwtToken);
         invalidTokenJwt(jwtToken);
         User user = userService.findOneByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User not found!"));
-        Optional<User> userUpdated = userService.updatePasswordUser(user,password);
+        Optional<User> userUpdated = userService.updatePasswordUser(user,updatePasswordRequest);
         if (userUpdated.isPresent()){
             emailService.sendEmailResetPasswordSuccess(userUpdated.get());
             return new ValidTokenResponse(true);
@@ -261,4 +266,8 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         return new ValidTokenResponse(false);
     }
 
+    @Override
+    public ValidTokenResponse verifyReCaptchaToken(String token) {
+        return reCaptchaService.verifyReCaptcha(token);
+    }
 }

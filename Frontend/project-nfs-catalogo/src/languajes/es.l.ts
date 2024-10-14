@@ -199,8 +199,6 @@ export const es = {
 
     //Password Reset Page
     forgotPasswordResetTitle: "Recuperación de Contraseña",
-    forgotPasswordResetText:
-      "Introduce la nueva contraseña que deseas utilizar para iniciar sesión.",
     forgotPasswordResetButton: "Recuperar Contraseña",
     forgotPasswordResetInvalidError:
       "Por favor, introduce una contraseña válida",

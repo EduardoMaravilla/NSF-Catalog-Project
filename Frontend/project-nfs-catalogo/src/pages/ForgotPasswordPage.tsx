@@ -10,7 +10,7 @@ import {
 import { FC, useState } from "react";
 import { useForm } from "../hooks/useForm";
 import { isApiResponseError, isValidEmail } from "../utilities/funcionExport";
-import { useReacerResetPassword } from "../services/racer/useReacerResetPassword";
+import { useRacerResetPassword } from "../services/racer/useRacerResetPassword";
 
 type ForgotPasswordPageProps = {
   t: (key: string) => string;
@@ -26,7 +26,7 @@ const ForgotPasswordPage: FC<ForgotPasswordPageProps> = ({ t }) => {
   const [emailFail, setEmailFail] = useState<boolean>(false);
   const { formState, onInputChange, resetForm } = useForm(initialForm);
   const { emailReset } = formState;
-  const {chargeEmailInOptions,getFetch} = useReacerResetPassword();
+  const {chargeEmailInOptions,getFetch} = useRacerResetPassword();
 
   const onResetPassword = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

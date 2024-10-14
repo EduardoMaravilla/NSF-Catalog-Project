@@ -194,10 +194,7 @@ export const en = {
 
     //Password Reset Page
     forgotPasswordResetTitle: "Password Recovery",
-    forgotPasswordResetText:
-      "Enter the new password you want to use to log in.",
     forgotPasswordResetButton: "Reset Password",
-    forgotPasswordResetInvalidError: "Please enter a valid password",
     forgotPasswordResetSuccessMessage:
       "Password successfully changed, you can now log in again.",
   },

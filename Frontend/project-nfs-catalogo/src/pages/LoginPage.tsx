@@ -23,6 +23,7 @@ import {
   isAuthenticationResponse,
 } from "../utilities/funcionExport";
 import { ApiResponseError } from "../types/TypesErrors";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 type loginProps = {
   t: (key: string) => string;
@@ -37,7 +38,8 @@ export const LoginPage: React.FC<loginProps> = ({ t }) => {
   const { formState, onInputChange, resetForm } =
     useForm<AuthenticationRequest>(initialForm);
   const [showAuthError, setShowAuthError] = useState<boolean>(false);
-  const [showEmailInvalidError, setShowEmailInvalidError] = useState<boolean>(false);
+  const [showEmailInvalidError, setShowEmailInvalidError] =
+    useState<boolean>(false);
   const [showConnectError, setShowConnectAuthError] = useState<boolean>(false);
   const authenticationRequest = formState;
   const { usernameOrEmail, password } = authenticationRequest;
@@ -47,6 +49,7 @@ export const LoginPage: React.FC<loginProps> = ({ t }) => {
   );
   const [showSuccesfulModal, setShowSuccesfulModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const isPasswordVisibility = () => {
@@ -55,6 +58,10 @@ export const LoginPage: React.FC<loginProps> = ({ t }) => {
 
   const onSubmitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!captchaToken) {
+      alert("Por favor, completa el captcha");
+      return;
+    }
     setIsLogined(true);
     setShowPassword(false);
     chargeAuthRequestInOptions(formState);
@@ -63,11 +70,11 @@ export const LoginPage: React.FC<loginProps> = ({ t }) => {
       setIsLogined(false);
       resetForm();
       const errorResponse = state.data as ApiResponseError;
-      if(errorResponse.backendMessage === "Email not validated!"){
-       setShowEmailInvalidError(true);
-      }else {
+      if (errorResponse.backendMessage === "Email not validated!") {
+        setShowEmailInvalidError(true);
+      } else {
         setShowAuthError(true);
-      }      
+      }
     } else if (isAuthenticationResponse(state.data)) {
       const authResponse = state.data as AuthenticationResponse;
       setShowSuccesfulModal(true);
@@ -89,6 +96,11 @@ export const LoginPage: React.FC<loginProps> = ({ t }) => {
     }
   };
 
+  const onCaptchaChange = (token: string | null) => {
+    console.log(token);
+    setCaptchaToken(token);
+  };
+
   const handleModalHide = () => {
     setShowSuccesfulModal(false);
   };
@@ -107,7 +119,7 @@ export const LoginPage: React.FC<loginProps> = ({ t }) => {
         <Col md={6} lg={4} className="mx-auto">
           <h2 className="text-center mb-4 fs-1">{t("initLogin")}</h2>
           <Form onSubmit={async (event) => await onSubmitLogin(event)}>
-          {showEmailInvalidError ? (
+            {showEmailInvalidError ? (
               <Form.Group>
                 <Form.Label className="d-flex justify-content-center align-items-center text-center">
                   <Alert
@@ -195,9 +207,19 @@ export const LoginPage: React.FC<loginProps> = ({ t }) => {
                 autoComplete="on"
               />
             </Form.Group>
+            <Form.Group className="d-flex justify-content-center align-items-center">
+              <HCaptcha
+                theme="dark"
+                sitekey={import.meta.env.VITE_API_Public_Key_ReCaptcha}
+                onVerify={onCaptchaChange}
+              />
+            </Form.Group>
             {isLogined ? (
               <Form.Group>
-                <Form.Label htmlFor="password" className="d-flex justify-content-center align-items-center">
+                <Form.Label
+                  htmlFor="password"
+                  className="d-flex justify-content-center align-items-center"
+                >
                   <Spinner animation="border" variant="primary" />
                 </Form.Label>
               </Form.Group>

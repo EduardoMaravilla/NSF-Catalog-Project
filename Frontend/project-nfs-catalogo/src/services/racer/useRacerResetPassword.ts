@@ -13,7 +13,7 @@ const headers = new Headers({
     credentials: "include",
   };
 
-export const useReacerResetPassword = () => {
+export const useRacerResetPassword = () => {
     const chargeEmailInOptions = (email: string) => {
         options.body = JSON.stringify({ email });
       };
