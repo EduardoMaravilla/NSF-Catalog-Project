@@ -12,28 +12,3 @@
     align-items: center;
     line-height: 1;
 }
-
-.mobile-only {
-    display: none; 
-}
-
-@media (max-width: 992px) {
-    .mobile-only {
-        display: block; 
-    }
-    
-    .web-only {
-        display: none; 
-    }
-}
-
-
-.web-only {
-    display: block; 
-}
-
-@media (max-width: 991px) {
-    .web-only {
-        display: none;
-    }
-}

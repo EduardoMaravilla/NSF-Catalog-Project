@@ -2,7 +2,7 @@ export const en = {
   translation: {
     //Top Bar
     currentLanguage: "en",
-    title: "NFS-Catalog",
+    title: "SDD-Catalog",
     language: "Language",
     home: "Home",
     about: "About",
@@ -16,6 +16,9 @@ export const en = {
     communityBuilds: "Community Builds",
     personalBuilds: "Personal Builds",
     createBuild: "Create Build",
+
+    //Create Build page
+    createBuildtitle: "Create Your Personal Build",
 
     //Driving config
     drivingConfig: "Driving Configuration",
@@ -48,6 +51,8 @@ export const en = {
     showPassword: "Show password",
     loginEmailInvalidError:
       "Your email has not been verified yet. Please check your inbox for a verification email. We have sent a new verification email.",
+    captchaAlertError: "Please complete the captcha to proceed.",
+    captchaValidationError: "Please complete the captcha again.",
 
     //Modal Login
     successfulLogin: "Login successful",
@@ -135,7 +140,17 @@ export const en = {
     profileName: "Name",
     profileUsername: "Username",
     profilePassword: "Password",
+    profileCurrentPassword: "Current Password",
+    profilePasswordChangeSuccess: "The password was changed successfully",
     profileEditError: "New Username name already exists",
+    profileChangeEditSuccess: "Data was updated successfully",
+    profileChangePassword: "Change Password",
+    profileNewPassword: "New Password",
+    profileNewConfirmPassword: "Repeat Password",
+    profileButtonChangePassword: "Change Password",
+    profileButtonCancel: "Cancel",
+    profileEditErrorPassword:
+      "The password could not be changed. Please try again.",
 
     //Create Account Page
     createAccountTitle: "CREATE ACCOUNT",

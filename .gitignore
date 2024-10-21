@@ -34,6 +34,11 @@ build/
 
 *.pem
 *.properties
+*.p12
+*.crt
+*.cnf
+*.key
+*.csr
 
 
 # Logs

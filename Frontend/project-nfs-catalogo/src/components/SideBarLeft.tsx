@@ -1,72 +1,92 @@
 import React, { useState } from "react";
-import { TiThMenu } from "react-icons/ti";
 import { Link } from "react-router-dom";
 import { MdCreateNewFolder } from "react-icons/md";
-import { IoIosPeople } from "react-icons/io";
 import { FaUser, FaAddressCard } from "react-icons/fa";
 import { useAuth } from "../context/auth/useAuth";
 import { AuthenticationContext } from "../context/auth/AuthenticationContext";
 import { Nav } from "react-bootstrap";
+import { BsBoxArrowInLeft, BsBoxArrowInRight } from "react-icons/bs";
+import { IoIosPeople } from "react-icons/io";
+import useCurrentPath from "../hooks/useCurrentPath";
 
 type SideBarLeftProps = {
   t: (key: string) => string;
 };
 
+const iconSize: number = 25;
+
 const SideBarLeft: React.FC<SideBarLeftProps> = ({ t }) => {
   const { isLogined } = useAuth(AuthenticationContext);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const currentPath = useCurrentPath();
 
   const handleToggle = () => {
     setIsCollapsed(!isCollapsed);
   };
 
   return (
-    <div
-      className={`left-side-bar bg-dark ${
-        isCollapsed ? "collapsed" : "expanded"
-      }`}
-    >
-      <button onClick={handleToggle} className="menu-toggle">
-        <TiThMenu size={30} />
-        {!isCollapsed && <h5>{t("menu")}</h5>}
-      </button>
-      <hr style={{ color: "white" }} />
+    <div className={`left-side-bar ${isCollapsed ? "" : "expanded"}`}>
+      <div className="menu-toggle" onClick={handleToggle}>
+        {!isCollapsed ? (
+          <>
+            <p className="fs-4 mx-2">{t("menu")}</p>
+            <BsBoxArrowInLeft className="fs-4 mx-2" size={iconSize + 5} />
+          </>
+        ) : (
+          <BsBoxArrowInRight className="fs-4 mx-2" size={iconSize + 5} />
+        )}
+      </div>
+      <hr className="menu-toggle-hr" />
       <div className="left-side-bar-menu">
         <Nav.Link
           as={Link}
           to="/create-build"
-          className="menu-item"
+          className={`menu-item ${
+            currentPath === "/create-build" ? "active" : ""
+          }`}
           disabled={isLogined}
         >
-          <MdCreateNewFolder size={25} />
-          {!isCollapsed && <h5>{t("createBuild")}</h5>}
+          <MdCreateNewFolder className="fs-4 mx-2" size={iconSize} />
+          {!isCollapsed ? (
+            <span className="fs-5 mx-2">{t("createBuild")}</span>
+          ) : null}
         </Nav.Link>
         <Nav.Link
           as={Link}
           to="/community-builds"
-          className="menu-item"
+          className={`menu-item ${
+            currentPath === "/community-builds" ? "active" : ""
+          }`}
           disabled={isLogined}
         >
-          <IoIosPeople size={25} />
-          {!isCollapsed && <h5>{t("communityBuilds")}</h5>}
+          <IoIosPeople className="fs-4 mx-2" size={iconSize} />
+          {!isCollapsed ? (
+            <span className="fs-5 mx-2">{t("communityBuilds")}</span>
+          ) : null}
         </Nav.Link>
         <Nav.Link
           as={Link}
           to="/personal-builds"
-          className="menu-item"
+          className={`menu-item ${
+            currentPath === "/personal-builds" ? "active" : ""
+          }`}
           disabled={isLogined}
         >
-          <FaUser size={25} />
-          {!isCollapsed && <h5>{t("personalBuilds")}</h5>}
+          <FaUser className="fs-4 mx-2" size={iconSize} />
+          {!isCollapsed ? (
+            <span className="fs-5 mx-2">{t("personalBuilds")}</span>
+          ) : null}
         </Nav.Link>
         <Nav.Link
           as={Link}
           to="/profile"
-          className="menu-item"
+          className={`menu-item ${currentPath === "/profile" ? "active" : ""}`}
           disabled={isLogined}
         >
-          <FaAddressCard size={25} />
-          {!isCollapsed && <h5>{t("profile")}</h5>}
+          <FaAddressCard className="fs-4 mx-2" size={iconSize} />
+          {!isCollapsed ? (
+            <span className="fs-5 mx-2">{t("profile")}</span>
+          ) : null}
         </Nav.Link>
       </div>
     </div>

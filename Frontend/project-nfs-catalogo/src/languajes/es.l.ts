@@ -2,7 +2,7 @@ export const es = {
   translation: {
     //Top Bar
     currentLanguage: "es",
-    title: "NFS-Catálogo",
+    title: "SDD-Catálogo",
     language: "Lenguaje",
     home: "Inicio",
     about: "Acerca de",
@@ -16,6 +16,9 @@ export const es = {
     communityBuilds: "Builds Comunidad",
     personalBuilds: "Builds Personales",
     createBuild: "Crear Build",
+
+    //Create Build page
+    createBuildtitle: "Crea tu configuración Personal",
 
     //Driving Config
     drivingConfig: "Configuracion De Manejo",
@@ -48,6 +51,8 @@ export const es = {
     showPassword: "Mostrar contraseña",
     loginEmailInvalidError:
       "Tu correo electrónico aún no ha sido verificado. Por favor, revisa tu bandeja de entrada para encontrar el correo de verificación. Hemos enviado un nuevo correo de verificación.",
+    captchaAlertError: "Por favor, completa el captcha para continuar.",
+    captchaValidationError: "Por favor, completa el captcha nuevamente.",
 
     //Modal Login
     successfulLogin: "Inicio de session exitoso",
@@ -135,7 +140,16 @@ export const es = {
     profileName: "Nombre",
     profileUsername: "Usuario",
     profilePassword: "Contraseña",
+    profileCurrentPassword: "Contraseña actual",
+    profilePasswordChangeSuccess: "La contraseña se cambio exitosamente",
     profileEditError: "Nuevo nombre de Usuario ya existe",
+    profileChangeEditSuccess: "Los datos se actualizaron correctamente",
+    profileChangePassword: "Cambiar Contraseña",
+    profileNewPassword: "Nueva Contraseña",
+    profileNewConfirmPassword: "Confirmar Contraseña",
+    profileButtonChangePassword:"Cambiar Contraseña",
+    profileButtonCancel: "Cancelar",
+    profileEditErrorPassword: "No se pudo cambiar la contraseña. Por favor, inténtalo de nuevo.",
 
     //Create Account Page
     createAccountTitle: "CREAR CUENTA",

@@ -21,115 +21,104 @@ import { useAuth } from "./context/auth/useAuth";
 import ProtectedRoute from "./context/auth/ProtectedRoute";
 import { VerifyEmailPage } from "./pages/VerifyEmailPage";
 import UpdatePasswordPage from "./pages/UpdatePasswordPage";
+import useWindowSize from "./hooks/useWindowSize";
+import useCurrentPath from "./hooks/useCurrentPath";
+import { getBackgroundForPath } from "./utilities/funcionExport";
 
-function App() {
+export function App() {
   const { t, i18n } = useTranslation();
   const { isAuthenticated } = useAuth(AuthenticationContext);
+  const { width } = useWindowSize();
+  const currentPath = useCurrentPath();
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
   return (
     <>
-      <div className="d-flex flex-column vh-100">
-        <nav>
-          <NavBarTop t={t} changeLanguage={changeLanguage} />
-          {isAuthenticated ? (
-            <div className="mobile-only">
-              <NavBarMobile t={t} />
-            </div>
-          ) : null}
-        </nav>
-        <main className="d-flex flex-grow-1">
-          {isAuthenticated ? (
-            <div className="web-only bg-dark p-3">
-              <SideBarLeft t={t} />
-            </div>
-          ) : null}
-          <div className="content p-3 flex-grow-1">
-            <Routes>
-              {/* public routes */}
-              <Route
-                path="/login"
-                element={
-                  isAuthenticated ? <Navigate to="/home" /> : <LoginPage t={t} />
-                }
-              />
-              <Route
-                path="/create-account"
-                element={
-                  isAuthenticated ? (
-                    <Navigate to="/home" />
-                  ) : (
-                    <CreateAccountPage t={t} />
-                  )
-                }
-              />
-              <Route
-                path="/forgot-password"
-                element={
-                  isAuthenticated ? (
-                    <Navigate to="/home" />
-                  ) : (
-                    <ForgotPasswordPage t={t} />
-                  )
-                }
-              />
-              <Route
-                path="/update-password"
-                element={
-                  isAuthenticated ? (
-                    <Navigate to="/home" />
-                  ) : (
-                    <UpdatePasswordPage t={t} />
-                  )
-                }
-              />
+      <NavBarTop t={t} changeLanguage={changeLanguage} />
+      {isAuthenticated && width < 992 ? <NavBarMobile t={t} /> : null}
+      <main
+        style={{
+          backgroundImage: getBackgroundForPath(currentPath),
+        }}
+      >
+        {isAuthenticated && width >= 992 ? <SideBarLeft t={t} /> : null}
+        <div className="my-2 mx-2 flex-grow-1">
+          <Routes>
+            {/* public routes */}
+            <Route
+              path="/login"
+              element={
+                isAuthenticated ? <Navigate to="/home" /> : <LoginPage t={t} />
+              }
+            />
+            <Route
+              path="/create-account"
+              element={
+                isAuthenticated ? (
+                  <Navigate to="/home" />
+                ) : (
+                  <CreateAccountPage t={t} />
+                )
+              }
+            />
+            <Route
+              path="/forgot-password"
+              element={
+                isAuthenticated ? (
+                  <Navigate to="/home" />
+                ) : (
+                  <ForgotPasswordPage t={t} />
+                )
+              }
+            />
+            <Route
+              path="/update-password"
+              element={
+                isAuthenticated ? (
+                  <Navigate to="/home" />
+                ) : (
+                  <UpdatePasswordPage t={t} />
+                )
+              }
+            />
 
-              <Route
-                path="/verify-email"
-                element={
-                  isAuthenticated ? (
-                    <Navigate to="/home" />
-                  ) : (
-                    <VerifyEmailPage t={t} />
-                  )
-                }
-              />
+            <Route
+              path="/verify-email"
+              element={
+                isAuthenticated ? (
+                  <Navigate to="/home" />
+                ) : (
+                  <VerifyEmailPage t={t} />
+                )
+              }
+            />
 
-              <Route path="/home" element={<HomePage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/contact" element={<ContactPage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
 
-              {/* private routes */}
-              <Route element={<ProtectedRoute />}>
-                <Route
-                  path="/create-build"
-                  element={<CreateBuildPage t={t} />}
-                />
-                <Route
-                  path="/community-builds"
-                  element={<CommunityBuildsPage />}
-                />
-                <Route
-                  path="/personal-builds"
-                  element={<PersonalBuildsPage />}
-                />
-                <Route path="/profile" element={<ProfilePage t={t} />} />
-              </Route>
+            {/* private routes */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/create-build" element={<CreateBuildPage t={t} />} />
               <Route
-                path="/*"
-                element={<Navigate to={isAuthenticated ? "/home" : "/login"} />}
+                path="/community-builds"
+                element={<CommunityBuildsPage />}
               />
-            </Routes>
-          </div>
-        </main>
-        <footer className="bg-dark text-center py-3 mt-auto">
-          <FooterComponent />
-        </footer>
-      </div>
+              <Route path="/personal-builds" element={<PersonalBuildsPage />} />
+              <Route path="/profile" element={<ProfilePage t={t} />} />
+            </Route>
+            <Route
+              path="/*"
+              element={<Navigate to={isAuthenticated ? "/home" : "/login"} />}
+            />
+          </Routes>
+        </div>
+      </main>
+      <footer className="bg-dark text-center">
+        <FooterComponent />
+      </footer>
     </>
   );
 }
-
-export default App;

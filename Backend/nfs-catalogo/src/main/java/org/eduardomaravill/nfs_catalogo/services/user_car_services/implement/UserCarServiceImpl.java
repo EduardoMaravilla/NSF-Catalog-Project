@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 public class UserCarServiceImpl implements IUserCarService {
     @Override
     public void createUserCarConfiguration(CarConfigRequest carConfigRequest) {
-        System.out.println("Se ejecuta guardar");
+
     }
 }

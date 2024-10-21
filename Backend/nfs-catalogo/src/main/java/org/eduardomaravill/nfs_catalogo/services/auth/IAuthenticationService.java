@@ -2,6 +2,7 @@ package org.eduardomaravill.nfs_catalogo.services.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.*;
+import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.NewUpdatePasswordRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UpdatePasswordRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UserSaveDto;
 
@@ -17,4 +18,6 @@ public interface IAuthenticationService {
     ValidTokenResponse resetPassword(String email);
     ValidTokenResponse updatePassword(HttpServletRequest request, UpdatePasswordRequest updatePasswordRequest);
     ValidTokenResponse verifyReCaptchaToken(String token);
+    NewUserProfileResponse profilePasswordUpdate(HttpServletRequest request, NewUpdatePasswordRequest newUpdatePasswordRequest);
+
 }

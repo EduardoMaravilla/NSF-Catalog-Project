@@ -25,7 +25,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
   const updateInductionLevel = (levelSelected: number) => {
     const level = levels.find((l) => l.id === levelSelected);
     if (level) {
-      const newCarConfig:CarConfigurationDto = { ...carConfig };
+      const newCarConfig: CarConfigurationDto = { ...carConfig };
       newCarConfig.inductionLevelDto = level;
       setCarConfig(newCarConfig);
       localStorage.setItem(
@@ -38,7 +38,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
   const updateEcuLevel = (levelSelected: number) => {
     const level = levels.find((l) => l.id === levelSelected);
     if (level) {
-      const newCarConfig:CarConfigurationDto = { ...carConfig };
+      const newCarConfig: CarConfigurationDto = { ...carConfig };
       newCarConfig.ecuLevelDto = level;
       setCarConfig(newCarConfig);
       localStorage.setItem(
@@ -51,7 +51,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
   const updateInjLevel = (levelSelected: number) => {
     const level = levels.find((l) => l.id === levelSelected);
     if (level) {
-      const newCarConfig:CarConfigurationDto = { ...carConfig };
+      const newCarConfig: CarConfigurationDto = { ...carConfig };
       newCarConfig.injectionLevelDto = level;
       setCarConfig(newCarConfig);
       localStorage.setItem(
@@ -64,7 +64,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
   const updateExhaustLevel = (levelSelected: number) => {
     const level = levels.find((l) => l.id === levelSelected);
     if (level) {
-      const newCarConfig:CarConfigurationDto = { ...carConfig };
+      const newCarConfig: CarConfigurationDto = { ...carConfig };
       newCarConfig.escapeLevelDto = level;
       setCarConfig(newCarConfig);
       localStorage.setItem(
@@ -77,7 +77,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
   const updateNitroLevel = (levelSelected: number) => {
     const level = levels.find((l) => l.id === levelSelected);
     if (level) {
-      const newCarConfig:CarConfigurationDto = { ...carConfig };
+      const newCarConfig: CarConfigurationDto = { ...carConfig };
       newCarConfig.nitroLevelDto = level;
       setCarConfig(newCarConfig);
       localStorage.setItem(
@@ -90,7 +90,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
   const updateBrakeLevel = (levelSelected: number) => {
     const level = levels.find((l) => l.id === levelSelected);
     if (level) {
-      const newCarConfig:CarConfigurationDto = { ...carConfig };
+      const newCarConfig: CarConfigurationDto = { ...carConfig };
       newCarConfig.brakeLevelDto = level;
       setCarConfig(newCarConfig);
       localStorage.setItem(
@@ -103,7 +103,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
   const updateEmbragueLevel = (levelSelected: number) => {
     const level = levels.find((l) => l.id === levelSelected);
     if (level) {
-      const newCarConfig:CarConfigurationDto = { ...carConfig };
+      const newCarConfig: CarConfigurationDto = { ...carConfig };
       newCarConfig.embregueLevelDto = level;
       setCarConfig(newCarConfig);
       localStorage.setItem(
@@ -116,7 +116,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
   const updateDifferentialLevel = (levelSelected: number) => {
     const level = levels.find((l) => l.id === levelSelected);
     if (level) {
-      const newCarConfig:CarConfigurationDto = { ...carConfig };
+      const newCarConfig: CarConfigurationDto = { ...carConfig };
       newCarConfig.differencialLevelDto = level;
       setCarConfig(newCarConfig);
       localStorage.setItem(
@@ -129,7 +129,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
   const updateTurbo = (turboSelected: number) => {
     const turbo = turbos.find((t) => t.id === turboSelected);
     if (turbo) {
-      const newCarConfig:CarConfigurationDto = { ...carConfig };
+      const newCarConfig: CarConfigurationDto = { ...carConfig };
       newCarConfig.turboDto = turbo;
       setCarConfig(newCarConfig);
       localStorage.setItem(
@@ -142,7 +142,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
   const updateSuspension = (suspensionSelected: number) => {
     const suspension = suspensions.find((s) => s.id === suspensionSelected);
     if (suspension) {
-      const newCarConfig:CarConfigurationDto = { ...carConfig };
+      const newCarConfig: CarConfigurationDto = { ...carConfig };
       newCarConfig.suspensionDto = suspension;
       setCarConfig(newCarConfig);
       localStorage.setItem(
@@ -154,7 +154,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
   const updateTire = (tireSelected: number) => {
     const tire = tires.find((t) => t.id === tireSelected);
     if (tire) {
-      const newCarConfig:CarConfigurationDto = { ...carConfig };
+      const newCarConfig: CarConfigurationDto = { ...carConfig };
       newCarConfig.tireDto = tire;
       setCarConfig(newCarConfig);
       localStorage.setItem(
@@ -167,7 +167,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
   const updateGear = (gearSelected: number) => {
     const gear = gears.find((g) => g.id === gearSelected);
     if (gear) {
-      const newCarConfig:CarConfigurationDto = { ...carConfig };
+      const newCarConfig: CarConfigurationDto = { ...carConfig };
       newCarConfig.gearDto = gear;
       setCarConfig(newCarConfig);
       localStorage.setItem(
@@ -229,6 +229,8 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
               </Card.Body>
             </Card>
           </Col>
+        </Row>
+        <Row className="my-2">
           <Col style={{ width: "100%" }}>
             <Card>
               <Card.Header className="text-center text-wrap">
@@ -323,8 +325,10 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
                 />
               </Card.Body>
             </Card>
-          </Col>
-          <Col style={{ width: "100%" }}>
+          </Col>          
+        </Row>
+        <Row className="my-2">
+        <Col style={{ width: "100%" }}>
             <Card>
               <Card.Header className="text-center text-wrap">
                 {t("carClutch")}

@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.NewUserProfileResponse;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.UserEditProfileRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.ValidTokenResponse;
+import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.NewUpdatePasswordRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UpdatePasswordRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UserSaveDto;
 import org.eduardomaravill.nfs_catalogo.services.auth.IAuthenticationService;
@@ -66,6 +67,12 @@ public class RacerController {
         String token = requestBody.get("token");
         ValidTokenResponse response = authenticationService.verifyReCaptchaToken(token);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/profile-password-update")
+    public ResponseEntity<NewUserProfileResponse> profilePasswordUpdate(HttpServletRequest request, @RequestBody NewUpdatePasswordRequest newUpdatePasswordRequest){
+        NewUserProfileResponse newUserProfileResponse = authenticationService.profilePasswordUpdate(request, newUpdatePasswordRequest);
+        return ResponseEntity.ok(newUserProfileResponse);
     }
 
 }

@@ -7,10 +7,16 @@ import {
   Card,
   Alert,
 } from "react-bootstrap";
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { useForm } from "../hooks/useForm";
 import { isApiResponseError, isValidEmail } from "../utilities/funcionExport";
 import { useRacerResetPassword } from "../services/racer/useRacerResetPassword";
+import { ValidTokenResponse } from "../types/TypesUserLogin";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import HReCaptchaComponent from "../components/utils/HReCaptchaComponent";
+import { useRacerValidateReCaptcha } from "../services/racer/useRacerValidateReCaptcha";
+import { AuthenticationContext } from "../context/auth/AuthenticationContext";
+import { useAuth } from "../context/auth/useAuth";
 
 type ForgotPasswordPageProps = {
   t: (key: string) => string;
@@ -24,25 +30,74 @@ const ForgotPasswordPage: FC<ForgotPasswordPageProps> = ({ t }) => {
   const [successRegister, setSuccessRegister] = useState<boolean>(false);
   const [failSendEmail, setFailSendEmail] = useState<boolean>(false);
   const [emailFail, setEmailFail] = useState<boolean>(false);
+  const [showConnectError, setShowConnectAuthError] = useState<boolean>(false);
   const { formState, onInputChange, resetForm } = useForm(initialForm);
   const { emailReset } = formState;
-  const {chargeEmailInOptions,getFetch} = useRacerResetPassword();
+  const resetPasswordService = useRacerResetPassword();
+  const captchaService = useRacerValidateReCaptcha();
+  const { isLogined, setIsLogined, isAuthenticated } = useAuth(AuthenticationContext);
+
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const captchaRef = useRef<HCaptcha | null>(null);
 
   const onResetPassword = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if(!isValidEmail(emailReset)){
-       setEmailFail(true);
-       return;
+    setIsLogined(true);
+
+    if (!captchaToken) {
+      alert(t("captchaAlertError"));
+      return;
     }
-    chargeEmailInOptions(emailReset);
-    const state = await getFetch();
+    captchaService.chargeCaptchaTokenInOptions(captchaToken);
+    const captchaResponse = await captchaService.getFetch();
+    console.log(captchaResponse);
+    if (isApiResponseError(captchaResponse.data)) {
+      resetCaptcha();
+      setIsLogined(false);
+      alert(t("captchaValidationError"));
+      return;
+    }
+    const validCaptcha = captchaResponse.data as ValidTokenResponse;
+    if (!validCaptcha.valid) {
+      resetCaptcha();
+      setIsLogined(false);
+      alert(t("captchaValidationError"));
+      return;
+    }
+
+    if (!isValidEmail(emailReset)) {
+      setEmailFail(true);
+      return;
+    }
+    resetPasswordService.chargeEmailInOptions(emailReset);
+    const state = await resetPasswordService.getFetch();
+    console.log(state);
     if (isApiResponseError(state.data)) {
-         setFailSendEmail(true);
-    }else {
-       setSuccessRegister(true);
-       resetForm();
+      setFailSendEmail(true);
+    } else if (state.errors) {
+      setShowConnectAuthError(true);
+    } else {
+      const response = state.data as ValidTokenResponse;
+      if (response.valid) {
+        setSuccessRegister(true);
+        resetForm();
+      } else {
+        setFailSendEmail(true);
+      }
     }
-  }
+    setIsLogined(false);
+  };
+
+  const resetCaptcha = () => {
+    if (captchaRef.current) {
+      captchaRef.current.resetCaptcha();
+      setCaptchaToken(null);
+    }
+  };
+
+  const onVerifyCaptcha = (token: string | null) => {
+    setCaptchaToken(token);
+  };
 
   return (
     <Container>
@@ -53,7 +108,7 @@ const ForgotPasswordPage: FC<ForgotPasswordPageProps> = ({ t }) => {
               {t("forgotPasswordTitle")}
             </Card.Header>
             <Card.Body>
-              <Form onSubmit={async (event) => await onResetPassword(event) }>
+              <Form onSubmit={async (event) => await onResetPassword(event)}>
                 {emailFail ? (
                   <Form.Group>
                     <Form.Label className="d-flex justify-content-center align-items-center text-center">
@@ -76,6 +131,19 @@ const ForgotPasswordPage: FC<ForgotPasswordPageProps> = ({ t }) => {
                         dismissible
                       >
                         <p>{t("forgotPasswordEmailInvalid")}</p>
+                      </Alert>
+                    </Form.Label>
+                  </Form.Group>
+                ) : null}
+                {showConnectError ? (
+                  <Form.Group>
+                    <Form.Label className="d-flex justify-content-center align-items-center">
+                      <Alert
+                        variant="danger"
+                        onClose={() => setShowConnectAuthError(false)}
+                        dismissible
+                      >
+                        <p>{t("loginConnectError")}</p>
                       </Alert>
                     </Form.Label>
                   </Form.Group>
@@ -111,7 +179,15 @@ const ForgotPasswordPage: FC<ForgotPasswordPageProps> = ({ t }) => {
                     {t("forgotPasswordText")}
                   </Form.Text>
                 </Form.Group>
-                <Button variant="primary" type="submit" className="w-100 mt-3">
+                {!isAuthenticated ? (
+                  <HReCaptchaComponent onVerify={onVerifyCaptcha} />
+                ) : null}
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="w-100 mt-3"
+                  disabled={isLogined || captchaToken === null}
+                >
                   {t("forgotPasswordButton")}
                 </Button>
               </Form>

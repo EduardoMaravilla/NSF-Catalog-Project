@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 import {
   Alert,
   Button,
@@ -20,6 +20,9 @@ import { UpdatePasswordRequest } from "../types/TypeConctact";
 import { useRacerUpdatePassword } from "../services/racer/useRacerUpdatePassword";
 import { useSearchParams } from "react-router-dom";
 import { ValidTokenResponse } from "../types/TypesUserLogin";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import HReCaptchaComponent from "../components/utils/HReCaptchaComponent";
+import { useRacerValidateReCaptcha } from "../services/racer/useRacerValidateReCaptcha";
 
 type UpdatePasswordPageProps = {
   t: (key: string) => string;
@@ -31,19 +34,24 @@ const initialForm: UpdatePasswordRequest = {
 };
 
 const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
-  const { isLogined } = useAuth(AuthenticationContext);
+  const { isLogined, setIsLogined, isAuthenticated } = useAuth(AuthenticationContext);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [failEditPassword, setFailEditPassword] = useState<boolean>(false);
   const [failEditConfirmPassword, setFailEditConfirmPassword] =
     useState<boolean>(false);
   const [isServerError, setIsServerError] = useState<boolean>(false);
   const [successRegister, setSuccessRegister] = useState<boolean>(false);
-  const { formState, onInputChange, resetForm } = useForm(initialForm);
-  const { getFetch, chargePasswordAndTokenInOptions } =
-    useRacerUpdatePassword();
+
+  const { formState, onInputChange, resetForm } = useForm(initialForm); 
   const { password, confirmPassword } = formState;
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
+  
+  const updatePasswordService = useRacerUpdatePassword();
+  const captchaService = useRacerValidateReCaptcha();
+
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const captchaRef = useRef<HCaptcha | null>(null);
 
   const isPasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -53,6 +61,31 @@ const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
+    setIsLogined(true);
+    setShowPassword(false);
+
+    if (!captchaToken) {
+      alert(t("captchaAlertError"));
+      return;
+    }
+    captchaService.chargeCaptchaTokenInOptions(captchaToken);
+    const captchaResponse = await captchaService.getFetch();
+    console.log(captchaResponse);
+    if (isApiResponseError(captchaResponse.data)) {
+      resetCaptcha();
+      setIsLogined(false);
+      alert(t("captchaValidationError"));
+      return;
+    }
+    const validCaptcha = captchaResponse.data as ValidTokenResponse;
+    if (!validCaptcha.valid) {
+      resetCaptcha();
+      setIsLogined(false);
+      alert(t("captchaValidationError"));
+      return;
+    }
+
+
     const count = validateData(formState);
     if (count > 0) {
       return;
@@ -62,8 +95,8 @@ const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
         password: password.trim(),
         confirmPassword: confirmPassword.trim(),
       };
-      chargePasswordAndTokenInOptions(newPassword, token);
-      const state = await getFetch();
+      updatePasswordService.chargePasswordAndTokenInOptions(newPassword, token);
+      const state = await updatePasswordService.getFetch();
       if (isApiResponseError(state.data)) {
         setIsServerError(true);
       } else {
@@ -75,6 +108,7 @@ const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
           setIsServerError(true);
         }
       }
+      setIsLogined(false);
     }
   };
 
@@ -93,6 +127,17 @@ const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
       setFailEditPassword(false);
     }
     return count;
+  };
+
+  const resetCaptcha = () => {
+    if (captchaRef.current) {
+      captchaRef.current.resetCaptcha();
+      setCaptchaToken(null);
+    }
+  };
+
+  const onVerifyCaptcha = (token: string | null) => {
+    setCaptchaToken(token);
   };
 
   return (
@@ -201,6 +246,9 @@ const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
                     {t("cAConfirmPasswordMessage")}
                   </Form.Text>
                 </Form.Group>
+                {!isAuthenticated ? (
+                  <HReCaptchaComponent onVerify={onVerifyCaptcha} />
+                ) : null}
                 {isLogined ? (
                   <Form.Group>
                     <Form.Label
@@ -215,6 +263,7 @@ const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
                     variant="primary"
                     type="submit"
                     className="w-100 mt-3"
+                    disabled={isLogined || captchaToken === null}
                   >
                     {t("forgotPasswordResetButton")}
                   </Button>

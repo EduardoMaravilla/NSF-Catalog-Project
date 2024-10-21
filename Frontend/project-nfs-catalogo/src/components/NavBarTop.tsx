@@ -13,6 +13,8 @@ import { useAuthLogoutService } from "../services/auth/useAuthLogoutService";
 import { useCarConfiguration } from "../context/config-car/useCarConfiguration";
 import { CarConfigurationContext } from "../context/config-car/CarConfigurationContext";
 import { initialCarConfiguration } from "../types/TypeCars";
+import useWindowSize from "../hooks/useWindowSize";
+import useCurrentPath from "../hooks/useCurrentPath";
 
 type NavBarTopProps = {
   t: (key: string) => string;
@@ -31,10 +33,14 @@ const NavBarTop: React.FC<NavBarTopProps> = ({ t, changeLanguage }) => {
   const { chargeTokenInOptions, getFetch } = useAuthLogoutService();
   const [showSuccesfulModal, setShowSuccesfulModal] = useState(false);
   const navigate = useNavigate();
-  const {setCarConfigurationCreated} = useCarConfiguration(CarConfigurationContext);
+  const { setCarConfigurationCreated } = useCarConfiguration(
+    CarConfigurationContext
+  );
+
+  const { width } = useWindowSize();
+  const currentPath = useCurrentPath();
 
   const onHandleClickLogout = async () => {
-    
     setIsLogined(true);
     chargeTokenInOptions(jwtToken);
     const state = await getFetch();
@@ -44,7 +50,7 @@ const NavBarTop: React.FC<NavBarTopProps> = ({ t, changeLanguage }) => {
       setShowSuccesfulModal(true);
       setTimeout(() => {
         setShowSuccesfulModal(false);
-        setCarConfigurationCreated({...initialCarConfiguration});
+        setCarConfigurationCreated({ ...initialCarConfiguration });
         localStorage.removeItem("token-jwt-nfs-catalog-unbound");
         localStorage.removeItem("car-configuration-created");
         localStorage.removeItem("user-profile-response");
@@ -58,7 +64,9 @@ const NavBarTop: React.FC<NavBarTopProps> = ({ t, changeLanguage }) => {
   };
 
   const onClickTitle = () => {
-    navigate("/home");
+    if (!isLogined) {
+      navigate("/home");
+    }
   };
 
   const handleModalHide = () => {
@@ -68,34 +76,53 @@ const NavBarTop: React.FC<NavBarTopProps> = ({ t, changeLanguage }) => {
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <div className="web-only-ico">
-          <img
-            src="/icon.png"
-            alt="Race Car"
-            style={{ marginLeft: "1vh" }}
-            onClick={onClickTitle}
-          />
-          <h2
-            style={{ color: "white", marginLeft: "1vh" }}
-            onClick={onClickTitle}
-          >
-            {t("title")}
-          </h2>
-        </div>
+        {width >= 992 ? (
+          <>
+            <img
+              src="/icon.png"
+              alt="Race Car"
+              style={{ marginLeft: "1vh" }}
+              onClick={onClickTitle}
+            />
+            <h2
+              style={{ color: "white", marginLeft: "1vh" }}
+              onClick={onClickTitle}
+            >
+              {t("title")}
+            </h2>
+          </>
+        ) : null}
         <Container>
-          <Navbar.Brand as={Link} to="/" className="mobile-only-ico">
-            <img src="/icon.png" alt="Race Car" width="50vh" /> {t("title")}
-          </Navbar.Brand>
+          {width < 992 ? (
+            <Navbar.Brand onClick={onClickTitle}>
+              <img src="/icon.png" alt="Race Car" width="50vh" /> {t("title")}
+            </Navbar.Brand>
+          ) : null}
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link as={Link} to="/home" disabled={isLogined}>
+              <Nav.Link
+                as={Link}
+                to="/home"
+                disabled={isLogined}
+                active={currentPath === "/home"}
+              >
                 {t("home")}
               </Nav.Link>
-              <Nav.Link as={Link} to="/about" disabled={isLogined}>
+              <Nav.Link
+                as={Link}
+                to="/about"
+                disabled={isLogined}
+                active={currentPath === "/about"}
+              >
                 {t("about")}
               </Nav.Link>
-              <Nav.Link as={Link} to="/contact" disabled={isLogined}>
+              <Nav.Link
+                as={Link}
+                to="/contact"
+                disabled={isLogined}
+                active={currentPath === "/contact"}
+              >
                 {t("contact")}
               </Nav.Link>
             </Nav>
@@ -105,7 +132,12 @@ const NavBarTop: React.FC<NavBarTopProps> = ({ t, changeLanguage }) => {
                   {t("logout")}
                 </Nav.Link>
               ) : (
-                <Nav.Link as={Link} to="/login" disabled={isLogined}>
+                <Nav.Link
+                  as={Link}
+                  to="/login"
+                  disabled={isLogined}
+                  active={currentPath === "/login"}
+                >
                   {t("login")}
                 </Nav.Link>
               )}
@@ -114,22 +146,28 @@ const NavBarTop: React.FC<NavBarTopProps> = ({ t, changeLanguage }) => {
                 id="collapsible-nav-dropdown"
                 disabled={isLogined}
               >
-                <NavDropdown.Item onClick={() => changeLanguage("en")}>
-                  English
+                <NavDropdown.Item
+                  className="fw-medium"
+                  onClick={() => changeLanguage("en")}
+                >
+                  English (en)
                 </NavDropdown.Item>
-                <NavDropdown.Item onClick={() => changeLanguage("es")}>
-                  Español
+                <NavDropdown.Item
+                  className="fw-medium"
+                  onClick={() => changeLanguage("es")}
+                >
+                  Español (es)
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Container>
+        <LogoutSuccesful
+          show={showSuccesfulModal}
+          onHide={handleModalHide}
+          t={t}
+        />
       </Navbar>
-      <LogoutSuccesful
-        show={showSuccesfulModal}
-        onHide={handleModalHide}
-        t={t}
-      />
     </>
   );
 };

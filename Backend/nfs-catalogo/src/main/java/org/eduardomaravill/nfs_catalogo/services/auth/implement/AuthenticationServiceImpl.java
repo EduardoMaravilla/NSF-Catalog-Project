@@ -2,6 +2,7 @@ package org.eduardomaravill.nfs_catalogo.services.auth.implement;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.*;
+import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.NewUpdatePasswordRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UpdatePasswordRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UserSaveDto;
 import org.eduardomaravill.nfs_catalogo.exceptions.ObjectNotFoundException;
@@ -83,7 +84,6 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         extraClaims.put("username", registeredUser.getUsername());
         extraClaims.put("email", registeredUser.getEmail());
         extraClaims.put("role", registeredUser.getRole().getName());
-        extraClaims.put("authorities", registeredUser.getAuthorities());
         extraClaims.put("registerTime", System.currentTimeMillis());
         return extraClaims;
     }
@@ -269,5 +269,25 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     @Override
     public ValidTokenResponse verifyReCaptchaToken(String token) {
         return reCaptchaService.verifyReCaptcha(token);
+    }
+
+    @Override
+    public NewUserProfileResponse profilePasswordUpdate(HttpServletRequest request, NewUpdatePasswordRequest newUpdatePasswordRequest) {
+        String jwtToken = jwtService.extractJwtFromRequest(request);
+        String username = jwtService.extractUsername(jwtToken);
+        User user = userService.findOneByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User not found!"));
+        AuthenticationResponse authResponse = login(new AuthenticationRequest(user.getEmail(), newUpdatePasswordRequest.getCurrentPassword()));
+        invalidTokenJwt(authResponse.getTokenJwt());
+        Optional<User> userUpdated = userService.updatePasswordUser(user, new UpdatePasswordRequest(newUpdatePasswordRequest.getNewPassword(), newUpdatePasswordRequest.getConfirmNewPassword()));
+        if (userUpdated.isPresent()){
+            invalidTokenJwt(jwtToken);
+            authResponse = login(new AuthenticationRequest(userUpdated.get().getUsername(),newUpdatePasswordRequest.getNewPassword()));
+            User newUser = userUpdated.get();
+            UserProfileResponse userProfileResponse = new UserProfileResponse(
+                    newUser.getName(), newUser.getUsername(), newUser.getEmail(), newUser.getRole().getName(), newUser.getColorProfile()
+            );
+            return new NewUserProfileResponse(userProfileResponse, authResponse);
+        }
+        return null;
     }
 }

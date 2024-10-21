@@ -1,4 +1,7 @@
-import { UserProfileResponse } from "../types/TypeConctact";
+import {
+  NewUserProfileReponse,
+  UserProfileResponse,
+} from "../types/TypeConctact";
 import { ApiResponseError } from "../types/TypesErrors";
 import {
   AuthenticationResponse,
@@ -64,6 +67,19 @@ export function isUserProfileResponse(
   return false;
 }
 
+export function isNewUserProfileResponse(
+  data: unknown
+): data is NewUserProfileReponse {
+  if (typeof data === "object" && data !== null) {
+    const response = data as NewUserProfileReponse;
+    return (
+      isUserProfileResponse(response.userProfileResponse) &&
+      isAuthenticationResponse(response.authenticationResponse)
+    );
+  }
+  return false;
+}
+
 export function loadDataFromLocalStorage<T>(key: string): T | null {
   const savedData = localStorage.getItem(key);
   return savedData ? JSON.parse(savedData) : null;
@@ -96,6 +112,18 @@ export function isValidEmail(email: string): boolean {
 }
 
 export function isValidPassword(password: string): boolean {
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-])[A-Za-z\d!@#$%^&*-]{8,}$/;
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-])[A-Za-z\d!@#$%^&*-]{8,}$/;
   return passwordRegex.test(password);
 }
+
+export function getBackgroundForPath(path: string): string{
+  switch (path) {
+    case "/login":
+      return "url('/images/loginBackground.jpg')"; 
+    case "/profile":
+      return "url('/images/profileBackground.jpg')"; 
+    default:
+      return "url('/images/loginBackground.jpg')";
+  }
+};

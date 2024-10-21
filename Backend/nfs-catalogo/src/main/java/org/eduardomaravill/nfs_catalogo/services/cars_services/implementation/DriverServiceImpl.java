@@ -12,7 +12,6 @@ import org.eduardomaravill.nfs_catalogo.services.MapperService;
 import org.eduardomaravill.nfs_catalogo.services.cars_services.IDriverService;
 import org.eduardomaravill.nfs_catalogo.services.cars_services.IInitSkidService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

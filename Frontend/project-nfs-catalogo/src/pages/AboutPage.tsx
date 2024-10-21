@@ -1,6 +1,11 @@
+import { AttributionComponent } from "../components/utils/AttributionComponent"
+
 const AboutPage = () => {
-  return (
-    <div>AboutPage</div>
+  return (<>
+  <div>AboutPage</div>
+  <AttributionComponent/>
+  </>
+    
   )
 }
 

@@ -52,3 +52,9 @@ export interface UpdatePasswordRequest {
   password : string;
   confirmPassword: string;
 }
+
+export interface NewUpdatePasswordRequest{
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}

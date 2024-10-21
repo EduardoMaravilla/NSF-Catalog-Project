@@ -8,7 +8,7 @@ import {
   Spinner,
   Alert,
 } from "react-bootstrap";
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { TermsAndConditionModal } from "../components/modals-components/TermsAndConditionModal";
 import { UserSaveDto } from "../types/TypeConctact";
 import { useForm } from "../hooks/useForm";
@@ -23,6 +23,9 @@ import { useAuth } from "../context/auth/useAuth";
 import { AuthenticationContext } from "../context/auth/AuthenticationContext";
 import { ApiResponseError } from "../types/TypesErrors";
 import { ValidTokenResponse } from "../types/TypesUserLogin";
+import HReCaptchaComponent from "../components/utils/HReCaptchaComponent";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { useRacerValidateReCaptcha } from "../services/racer/useRacerValidateReCaptcha";
 
 type CreateAccountPageProps = {
   t: (key: string) => string;
@@ -44,15 +47,22 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
   const [failEditUsername, setFailEditUsername] = useState<boolean>(false);
   const [failEditEmail, setFailEditEmail] = useState<boolean>(false);
   const [failEditPassword, setFailEditPassword] = useState<boolean>(false);
-  const [successRegister, setSuccessRegister] = useState<boolean>(false);
+
   const [failEditRepeatedPassword, setFailEditRepeatedPassword] =
     useState<boolean>(false);
   const [invalidUsername, setInvalidUsername] = useState<boolean>(false);
   const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
   const [isServerError, setIsServerError] = useState<boolean>(false);
   const [isTermAcceptError, setIsTermAcceptError] = useState<boolean>(false);
-  const { getFetch, chargeRegisterInOptions } = useRacerRegisterProfile();
-  const { isLogined, setIsLogined } = useAuth(AuthenticationContext);
+
+  const [successRegister, setSuccessRegister] = useState<boolean>(false);
+  const racerRegisterProfileService = useRacerRegisterProfile();
+  const captchaService = useRacerValidateReCaptcha();
+  const { isLogined, setIsLogined, isAuthenticated } = useAuth(
+    AuthenticationContext
+  );
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const captchaRef = useRef<HCaptcha | null>(null);
 
   const { formState, onInputChange, resetForm } =
     useForm<UserSaveDto>(initialUserRegister);
@@ -78,6 +88,28 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
   ) => {
     event.preventDefault();
     setIsLogined(true);
+
+    if (!captchaToken) {
+      alert(t("captchaAlertError"));
+      return;
+    }
+    captchaService.chargeCaptchaTokenInOptions(captchaToken);
+    const captchaResponse = await captchaService.getFetch();
+    console.log(captchaResponse);
+    if (isApiResponseError(captchaResponse.data)) {
+      resetCaptcha();
+      setIsLogined(false);
+      alert(t("captchaValidationError"));
+      return;
+    }
+    const validCaptcha = captchaResponse.data as ValidTokenResponse;
+    if (!validCaptcha.valid) {
+      resetCaptcha();
+      setIsLogined(false);
+      alert(t("captchaValidationError"));
+      return;
+    }
+
     const count = validateData(formState);
     if (count > 0 || !isTermsAccepted) {
       setIsLogined(false);
@@ -91,8 +123,8 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
       password: formState.password.trim(),
       repeatedPassword: formState.repeatedPassword.trim(),
     };
-    chargeRegisterInOptions(userSave);
-    const state = await getFetch();
+    racerRegisterProfileService.chargeRegisterInOptions(userSave);
+    const state = await racerRegisterProfileService.getFetch();
     if (isApiResponseError(state.data)) {
       const responseError = state.data as ApiResponseError;
       if (responseError.backendMessage === "User already exists") {
@@ -108,7 +140,7 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
       const validResponse = state.data as ValidTokenResponse;
       if (validResponse.valid) {
         setSuccessRegister(true);
-      }else {
+      } else {
         setIsServerError(true);
       }
     }
@@ -152,10 +184,21 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
     return count;
   };
 
+  const onVerifyCaptcha = (token: string | null) => {
+    setCaptchaToken(token);
+  };
+
+  const resetCaptcha = () => {
+    if (captchaRef.current) {
+      captchaRef.current.resetCaptcha();
+      setCaptchaToken(null);
+    }
+  };
+
   return (
-    <Container className="d-flex justify-content-center align-items-center">
-      <Row>
-        <Col>
+    <Container className="d-flex justify-content-center align-items-center w-100 my-2">
+      <Row className="w-100">
+        <Col md={6} lg={10} className="d-flex justify-content-center align-items-center mx-auto">
           <Card>
             <Card.Header className="text-center fw-bold">
               {t("createAccountTitle")}
@@ -398,6 +441,9 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
                   onHide={handleModalHide}
                   t={t}
                 />
+                {!isAuthenticated ? (
+                  <HReCaptchaComponent onVerify={onVerifyCaptcha} />
+                ) : null}
                 {isLogined ? (
                   <Form.Group>
                     <Form.Label
@@ -412,6 +458,7 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
                     variant="primary"
                     type="submit"
                     className="w-100 mt-3"
+                    disabled={isLogined || captchaToken === null}
                   >
                     {t("cAConfirmButton")}
                   </Button>

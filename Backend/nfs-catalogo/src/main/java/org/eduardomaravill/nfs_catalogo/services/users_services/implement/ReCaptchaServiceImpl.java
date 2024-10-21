@@ -4,16 +4,13 @@ import org.eduardomaravill.nfs_catalogo.dtos.auth.ValidTokenResponse;
 import org.eduardomaravill.nfs_catalogo.services.users_services.IReCaptchaService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class ReCaptchaServiceImpl implements IReCaptchaService {
@@ -28,21 +25,27 @@ public class ReCaptchaServiceImpl implements IReCaptchaService {
 
     @Override
     public ValidTokenResponse verifyReCaptcha(String token) {
-        Map<String, String> requestParams = new HashMap<>();
-        requestParams.put("secret", reCaptchaApiSecretKey);
-        requestParams.put("response", token);
+
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add("response", token);
+        formData.add("secret", reCaptchaApiSecretKey);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(formData, headers);
 
         ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(
                 reCaptchaVerifyUrl,
-                HttpMethod.POST, new HttpEntity<>(requestParams),
+                HttpMethod.POST, request,
                 new ParameterizedTypeReference<>() {
                 });
 
         Map<String, Object> body = responseEntity.getBody();
 
         if (body != null) {
-             Boolean success = (Boolean) body.get("success");
-             return new ValidTokenResponse(success);
+            Boolean success = (Boolean) body.get("success");
+            return new ValidTokenResponse(success);
         }
         return new ValidTokenResponse(false);
     }
