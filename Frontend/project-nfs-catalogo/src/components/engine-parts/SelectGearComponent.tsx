@@ -19,6 +19,7 @@ export const SelectGearComponent: FC<SelectGearComponentProps> = ({
   return (
     <Form.Select
       name={name}
+      className="text-wrap fw-bold"
       style={{
         backgroundColor: getColorLevel(gear.levelDto.id),
         color: "white",
@@ -30,9 +31,10 @@ export const SelectGearComponent: FC<SelectGearComponentProps> = ({
         <option
           key={g.id}
           value={g.id}
+           className="text-light fw-medium"
           style={{
             backgroundColor: getColorLevel(g.levelDto.id),
-            color: "black",
+            color: "white",
           }}
         >
           {g.gearValue}

@@ -1,4 +1,3 @@
-import { Box, Typography } from "@mui/material";
 import { ChangeEvent, FC } from "react";
 import { Form } from "react-bootstrap";
 import { CarConfigurationDto } from "../../types/TypeCars";
@@ -26,38 +25,33 @@ const ControlTractionComponent: FC<ControlTractionComponentProps> = ({
   };
 
   return (
-    <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+    <Form.Group className="d-flex justify-content-between align-items-center">
+      <Form.Label htmlFor="selectControlTraction"
+        className="text-light fw-medium text-nowrap text-decoration-underline me-5"
+        style={{ fontSize: "0.7rem" }}
+      >
+        {t("tractionControl")}
+      </Form.Label>
+      <Form.Select
+        id="selectControlTraction"
+        name="selectControlTraction"
+        size="sm"
+        className="without-background text-light fw-medium"
+        value={carConfig.driverDto.controlTraction ? 1 : 2}
+        onChange={handleChange}
+        style={{
+          width: "auto",
+          fontSize: "0.7rem",
         }}
       >
-        <Typography
-          variant="body2"
-          sx={{
-            fontSize: "0.70rem",
-            fontWeight: "bold",
-            textDecoration: "underline",
-          }}
-        >
-          {t("tractionControl")}
-        </Typography>
-        <Typography variant="body2">
-          <Form.Select
-            name="selectControlTraction"
-            size="sm"
-            value={carConfig.driverDto.controlTraction ? 1 : 2}
-            onChange={handleChange}
-            style={{ fontSize: "0.70rem" }}
-          >
-            <option value={1}>{t("tcON")}</option>
-            <option value={2}>{t("tcOFF")}</option>
-          </Form.Select>
-        </Typography>
-      </Box>
-    </Box>
+        <option className="bg-dark" value={1}>
+          {t("tcON")}
+        </option>
+        <option className="bg-dark" value={2}>
+          {t("tcOFF")}
+        </option>
+      </Form.Select>
+    </Form.Group>
   );
 };
 

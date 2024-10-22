@@ -1,0 +1,8 @@
+.select-class:hover{
+    color: black !important;
+}
+
+.without-background{
+    background-color: transparent;
+}
+  

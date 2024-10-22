@@ -20,6 +20,7 @@ export const SelectEngineComponent: FC<SelectEngineComponentProps> = ({
     <Form.Select
       name={name}
       size="sm"
+      className="fw-bold"
       style={{
         backgroundColor: getColorLevel(engine.levelDto.id),
         color: "white",
@@ -32,6 +33,7 @@ export const SelectEngineComponent: FC<SelectEngineComponentProps> = ({
         <option
           key={eng.id}
           value={eng.id}
+          className="fw-medium"
           style={{
             backgroundColor: getColorLevel(eng.levelDto.id),
             color: "white",

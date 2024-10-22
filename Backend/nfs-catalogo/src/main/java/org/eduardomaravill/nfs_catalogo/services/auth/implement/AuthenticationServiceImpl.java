@@ -290,4 +290,10 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         }
         return null;
     }
+
+    @Override
+    public ValidTokenResponse sendContactEmail(ContactFormRequest contactFormRequest) {
+        emailService.sendContactEmail(contactFormRequest);
+        return new ValidTokenResponse(true);
+    }
 }

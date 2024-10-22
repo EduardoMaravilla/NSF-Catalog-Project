@@ -1,9 +1,8 @@
-import { Autocomplete, TextField } from "@mui/material";
-import { Card, Image, ListGroup } from "react-bootstrap";
+import { Card, Form, Image, ListGroup } from "react-bootstrap";
 import { useLoadBasicData } from "../../context/load-basic-data/useLoadBasicData";
 import { LoadBasicDataContext } from "../../context/load-basic-data/LoadBasicDataContext";
 import { CarConfigurationDto, CarDto } from "../../types/TypeCars";
-import { FC, SyntheticEvent } from "react";
+import {  FC } from "react";
 
 type CarLevelSelectComponentProps = {
   t: (key: string) => string;
@@ -31,18 +30,12 @@ const CarLevelSelectComponent: FC<CarLevelSelectComponentProps> = ({
     }
   };
 
-  const handleCarSelect = (_: SyntheticEvent, selectedCar: string | null) => {
-    const newCarConfig:CarConfigurationDto = { ...carConfig };
+  const onHandleCarSelect = (carId: number) => {
+    const newCarConfig: CarConfigurationDto = { ...carConfig };
 
-    if (selectedCar) {
-      const carObject = cars.find(
-        (car: CarDto) =>
-          `${car.makerDto.name} ${car.model} (${car.year})` === selectedCar
-      );
-
-      if (carObject) {
-        newCarConfig.carDto = carObject;
-      }
+    const carObject = cars.find((car: CarDto) => car.id === carId);
+    if (carObject) {
+      newCarConfig.carDto = carObject;
     } else {
       newCarConfig.carDto = null;
     }
@@ -53,41 +46,38 @@ const CarLevelSelectComponent: FC<CarLevelSelectComponentProps> = ({
     );
   };
 
-  const selectedCar = carConfig.carDto
-    ? `${carConfig.carDto.makerDto.name} ${carConfig.carDto.model} (${carConfig.carDto.year})`
-    : null;
-
   return (
-    <Card>
+    <Card className="profile-card border border-primary-subtle h-100">
       <Card.Header>
-        <Autocomplete
-          options={cars
-            .map(
-              (car: CarDto) => `${car.makerDto.name} ${car.model} (${car.year})`
-            )
-            .sort()}
-          value={selectedCar}
-          onChange={handleCarSelect}
-          clearOnEscape
-          renderInput={(params) => (
-            <TextField {...params} label={t("carSelect")} />
-          )}
-        />
+        <Form.Select
+        className="fw-bold fs-6 text-light without-background"
+          name="selectCar"
+          value={carConfig.carDto ? carConfig.carDto.id : 0}
+          onChange={(e) => onHandleCarSelect(parseInt(e.target.value))}
+        >
+          <option className="text-center fw-medium bg-dark" value={0}>{t("carSelect")}</option>
+          {cars.sort().map((car) => (
+            <option className="fw-medium bg-dark" key={car.id} value={car.id}>
+              {car.makerDto.name + " " + car.model + " (" + car.year + ")"}
+            </option>
+          ))}
+        </Form.Select>
       </Card.Header>
-      <Card.Body>
-        <div className="d-flex flex-column align-items-center">
-          <div className="d-flex justify-content-center">
-            <Image src="images/car.jpg" height={180} />
+      <Card.Body className="d-flex flex-column justify-content-between">
+        <br />
+        <div className="d-flex flex-column align-items-center h-100 w-100">
+          <div className="d-flex justify-content-center h-100 w-100">
+            <Image className="rounded-3" src="images/car.jpg" height={180} />
           </div>
         </div>
-        <hr />
-        <Card>
-          <Card.Header className="text-center">{t("classSelect")}</Card.Header>
+
+        <Card className="without-background">
+          <Card.Header className="text-center text-light fw-bold fs-5">{t("classSelect")}</Card.Header>
           <Card.Body>
             <ListGroup horizontal>
               {classes.map((classe) => (
                 <ListGroup.Item
-                  className="text-center"
+                  className="text-center profile-card text-light fw-medium select-class"
                   key={classe.id}
                   action
                   active={classe.id === carConfig.classesDto.id}
@@ -99,6 +89,7 @@ const CarLevelSelectComponent: FC<CarLevelSelectComponentProps> = ({
             </ListGroup>
           </Card.Body>
         </Card>
+        <br />
       </Card.Body>
     </Card>
   );

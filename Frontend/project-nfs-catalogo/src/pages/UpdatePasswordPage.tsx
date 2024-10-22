@@ -7,7 +7,6 @@ import {
   Container,
   Form,
   Row,
-  Spinner,
 } from "react-bootstrap";
 import { useAuth } from "../context/auth/useAuth";
 import { AuthenticationContext } from "../context/auth/AuthenticationContext";
@@ -23,6 +22,7 @@ import { ValidTokenResponse } from "../types/TypesUserLogin";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import HReCaptchaComponent from "../components/utils/HReCaptchaComponent";
 import { useRacerValidateReCaptcha } from "../services/racer/useRacerValidateReCaptcha";
+import SpinnerComponent from "../components/utils/SpinnerComponent";
 
 type UpdatePasswordPageProps = {
   t: (key: string) => string;
@@ -144,7 +144,7 @@ const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
     <Container>
       <Row>
         <Col>
-          <Card>
+          <Card className="profile-card border border-primary text-light">
             <Card.Header className="text-center fw-bold fs-2">
               {t("forgotPasswordResetTitle")}
             </Card.Header>
@@ -183,7 +183,7 @@ const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
                     <Col>
                       <Form.Label
                         htmlFor="passwordRegister"
-                        className="fw-bold"
+                        className="fw-bold fs-5"
                       >
                         {t("cAPassword")}
                       </Form.Label>
@@ -194,7 +194,7 @@ const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
                         name="showPassword"
                         reverse
                         label={t("showPassword")}
-                        type="checkbox"
+                        type="checkbox"                        
                         checked={showPassword}
                         onChange={isPasswordVisibility}
                         disabled={isLogined}
@@ -206,6 +206,7 @@ const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
                     name="password"
                     type={showPassword ? "text" : "password"}
                     value={password}
+                    className="fw-medium"
                     placeholder={t("cAPasswordText")}
                     onChange={onInputChange}
                     autoComplete="new-password webauthn"
@@ -223,7 +224,7 @@ const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
                 <Form.Group className="mb-3">
                   <Form.Label
                     htmlFor="repeatPasswordRegister"
-                    className="fw-bold"
+                    className="fw-bold fs-5"
                   >
                     {t("cAConfirmPassword")}
                   </Form.Label>
@@ -232,6 +233,7 @@ const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
                     name="confirmPassword"
                     type={showPassword ? "text" : "password"}
                     value={confirmPassword}
+                    className="fw-medium"
                     placeholder={t("cAConfirmPasswordText")}
                     onChange={onInputChange}
                     autoComplete="new-password webauthn"
@@ -250,19 +252,12 @@ const UpdatePasswordPage: FC<UpdatePasswordPageProps> = ({ t }) => {
                   <HReCaptchaComponent onVerify={onVerifyCaptcha} />
                 ) : null}
                 {isLogined ? (
-                  <Form.Group>
-                    <Form.Label
-                      htmlFor="password"
-                      className="d-flex justify-content-center align-items-center"
-                    >
-                      <Spinner animation="border" variant="primary" />
-                    </Form.Label>
-                  </Form.Group>
+                  <SpinnerComponent />
                 ) : (
                   <Button
                     variant="primary"
                     type="submit"
-                    className="w-100 mt-3"
+                    className="w-100 mt-3 my-2"
                     disabled={isLogined || captchaToken === null}
                   >
                     {t("forgotPasswordResetButton")}

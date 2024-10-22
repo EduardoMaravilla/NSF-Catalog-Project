@@ -1,10 +1,7 @@
 package org.eduardomaravill.nfs_catalogo.controllers.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.eduardomaravill.nfs_catalogo.dtos.auth.AuthenticationRequest;
-import org.eduardomaravill.nfs_catalogo.dtos.auth.AuthenticationResponse;
-import org.eduardomaravill.nfs_catalogo.dtos.auth.UserProfileResponse;
-import org.eduardomaravill.nfs_catalogo.dtos.auth.ValidTokenResponse;
+import org.eduardomaravill.nfs_catalogo.dtos.auth.*;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.LogoutResponse;
 import org.eduardomaravill.nfs_catalogo.services.auth.IAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +46,12 @@ public class AuthenticationController {
     public ResponseEntity<UserProfileResponse> findMyProfile(){
         UserProfileResponse user = authenticationService.findLoggedInUser();
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/contact-email")
+    public ResponseEntity<ValidTokenResponse> sendContactEmail(@RequestBody ContactFormRequest contactFormRequest){
+        ValidTokenResponse validTokenResponse = authenticationService.sendContactEmail(contactFormRequest);
+        return ResponseEntity.ok(validTokenResponse);
     }
 
 }

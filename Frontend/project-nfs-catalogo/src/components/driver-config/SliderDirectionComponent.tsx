@@ -36,6 +36,9 @@ const SliderDirectionComponent: FC<SliderDirectionComponentProps> = ({t,carConfi
           >
             {t("handlingSensitivity")}
           </Typography>
+          <Typography variant="body2" sx={{ fontSize: "0.75rem" }}>
+            {carConfig.driverDto.direction}
+          </Typography>
         </Box>
         <Slider
           step={1}

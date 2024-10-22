@@ -18,10 +18,10 @@ const CreateBuildPage: FC<CreateBuildPAgeProps> = ({ t }) => {
   const { width } = useWindowSize();
 
   return (
-    <div>
+    <div className="text-light">
       <div className="text-center">
         <p className="fs-2 fw-bold">{t("createBuildtitle")}</p>
-        <hr className="fw-bold"/>
+        <hr className="fw-bold" />
       </div>
       {width >= 992 ? (
         <>
@@ -67,31 +67,41 @@ const CreateBuildPage: FC<CreateBuildPAgeProps> = ({ t }) => {
         </>
       ) : (
         <div>
-          <CarLevelSelectComponent
-            t={t}
-            carConfig={carConfigurationCreated}
-            setCarConfig={setCarConfigurationCreated}
-          />
-          <CarValuesComponent
-            t={t}
-            carConfig={carConfigurationCreated}
-            setCarConfig={setCarConfigurationCreated}
-          />
-          <DriveConfigComponent
-            t={t}
-            carConfig={carConfigurationCreated}
-            setCarConfig={setCarConfigurationCreated}
-          />
-          <EnginePartsComponents
-            t={t}
-            carConfig={carConfigurationCreated}
-            setCarConfig={setCarConfigurationCreated}
-          />
-          <CarMotorAndExtrasComponent
-            t={t}
-            carConfig={carConfigurationCreated}
-            setCarConfig={setCarConfigurationCreated}
-          />
+          <div className="my-2">
+            <CarLevelSelectComponent
+              t={t}
+              carConfig={carConfigurationCreated}
+              setCarConfig={setCarConfigurationCreated}
+            />
+          </div>
+          <div className="my-2">
+            <CarValuesComponent
+              t={t}
+              carConfig={carConfigurationCreated}
+              setCarConfig={setCarConfigurationCreated}
+            />
+          </div>
+          <div className="my-2">
+            <DriveConfigComponent
+              t={t}
+              carConfig={carConfigurationCreated}
+              setCarConfig={setCarConfigurationCreated}
+            />
+          </div>
+          <div className="my-2">
+            <EnginePartsComponents
+              t={t}
+              carConfig={carConfigurationCreated}
+              setCarConfig={setCarConfigurationCreated}
+            />
+          </div>
+          <div className="my-2">
+            <CarMotorAndExtrasComponent
+              t={t}
+              carConfig={carConfigurationCreated}
+              setCarConfig={setCarConfigurationCreated}
+            />
+          </div>
         </div>
       )}
     </div>

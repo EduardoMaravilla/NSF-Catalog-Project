@@ -20,6 +20,7 @@ import HReCaptchaComponent from "../components/utils/HReCaptchaComponent";
 import { ValidTokenResponse } from "../types/TypesUserLogin";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useRacerValidateReCaptcha } from "../services/racer/useRacerValidateReCaptcha";
+import SpinnerComponent from "../components/utils/SpinnerComponent";
 
 type VerifyEmailPageProps = {
   t: (key: string) => string;
@@ -107,8 +108,8 @@ export const VerifyEmailPage: FC<VerifyEmailPageProps> = ({ t }) => {
     <Container className="d-flex justify-content-center align-items-center">
       <Row>
         <Col>
-          <Card className="justify-content-center align-items-center">
-            <Card.Header className="text-center fs-2">
+          <Card className="justify-content-center align-items-center my-2 border border-primary profile-card">
+            <Card.Header className="text-center fs-2 fw-bold text-light">
               {t("verifyEmailTitle")}
             </Card.Header>
             <Card.Body className="justify-content-center align-items-center text-center">
@@ -128,14 +129,18 @@ export const VerifyEmailPage: FC<VerifyEmailPageProps> = ({ t }) => {
               {!isAuthenticated ? (
                 <HReCaptchaComponent onVerify={onVerifyCaptcha} />
               ) : null}
-              <Button
-                className="fs-3"
-                type="button"
-                onClick={async () => await onVerifyEmail()}
-                disabled={isLogined || captchaToken === null}
-              >
-                {t("verifyEmailButton")}
-              </Button>
+              {isLogined ? (
+                <SpinnerComponent />
+              ) : (
+                <Button
+                  className="fs-3 my-2"
+                  type="button"
+                  onClick={async () => await onVerifyEmail()}
+                  disabled={isLogined || captchaToken === null}
+                >
+                  {t("verifyEmailButton")}
+                </Button>
+              )}
             </Card.Body>
           </Card>
         </Col>

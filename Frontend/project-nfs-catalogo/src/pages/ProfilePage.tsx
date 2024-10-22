@@ -545,7 +545,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ t }) => {
               <>
                 <Button
                   variant="info"
-                  className="mx-2"
+                  className="mx-2 fs-5 text-light"
                   onClick={() => {
                     setEditNewPassword(!editNewPassword);
                     setShowNewPassword(false);
@@ -563,6 +563,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ t }) => {
                     : t("profileButtonChangePassword")}
                 </Button>
                 <Button
+                className="fs-5 text-light"
                   variant="success"
                   type="submit"
                   disabled={!editNewPassword || captchaToken === null}

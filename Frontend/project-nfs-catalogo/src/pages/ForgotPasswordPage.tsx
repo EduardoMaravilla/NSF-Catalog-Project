@@ -17,6 +17,7 @@ import HReCaptchaComponent from "../components/utils/HReCaptchaComponent";
 import { useRacerValidateReCaptcha } from "../services/racer/useRacerValidateReCaptcha";
 import { AuthenticationContext } from "../context/auth/AuthenticationContext";
 import { useAuth } from "../context/auth/useAuth";
+import SpinnerComponent from "../components/utils/SpinnerComponent";
 
 type ForgotPasswordPageProps = {
   t: (key: string) => string;
@@ -35,7 +36,9 @@ const ForgotPasswordPage: FC<ForgotPasswordPageProps> = ({ t }) => {
   const { emailReset } = formState;
   const resetPasswordService = useRacerResetPassword();
   const captchaService = useRacerValidateReCaptcha();
-  const { isLogined, setIsLogined, isAuthenticated } = useAuth(AuthenticationContext);
+  const { isLogined, setIsLogined, isAuthenticated } = useAuth(
+    AuthenticationContext
+  );
 
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const captchaRef = useRef<HCaptcha | null>(null);
@@ -103,7 +106,7 @@ const ForgotPasswordPage: FC<ForgotPasswordPageProps> = ({ t }) => {
     <Container>
       <Row>
         <Col>
-          <Card>
+          <Card className="profile-card text-light border border-primary">
             <Card.Header className="text-center fw-bold fs-2">
               {t("forgotPasswordTitle")}
             </Card.Header>
@@ -162,34 +165,41 @@ const ForgotPasswordPage: FC<ForgotPasswordPageProps> = ({ t }) => {
                   </Form.Group>
                 ) : null}
                 <Form.Group>
-                  <Form.Label htmlFor="emailReset" className="fw-bold">
+                  <Form.Label htmlFor="emailReset" className="fw-bold fs-4">
                     {t("cAEmail")}
                   </Form.Label>
                   <Form.Control
                     id="emailReset"
                     name="emailReset"
                     value={emailReset}
+                    className={`bg-dark text-light fw-medium ${
+                      isLogined ? "disabled-custom" : ""
+                    }`}
                     type="email"
                     placeholder={t("cAEmailText")}
                     onChange={onInputChange}
                     required
                     autoComplete="off"
                   />
-                  <Form.Text className="text-muted">
+                  <Form.Text className="text-light">
                     {t("forgotPasswordText")}
                   </Form.Text>
                 </Form.Group>
                 {!isAuthenticated ? (
                   <HReCaptchaComponent onVerify={onVerifyCaptcha} />
                 ) : null}
-                <Button
-                  variant="primary"
-                  type="submit"
-                  className="w-100 mt-3"
-                  disabled={isLogined || captchaToken === null}
-                >
-                  {t("forgotPasswordButton")}
-                </Button>
+                {isLogined ? (
+                  <SpinnerComponent />
+                ) : (
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    className="w-100 mt-3 my-2"
+                    disabled={isLogined || captchaToken === null}
+                  >
+                    {t("forgotPasswordButton")}
+                  </Button>
+                )}
               </Form>
             </Card.Body>
           </Card>

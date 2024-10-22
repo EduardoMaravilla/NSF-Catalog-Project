@@ -1,5 +1,6 @@
 package org.eduardomaravill.nfs_catalogo.services.users_services;
 
+import org.eduardomaravill.nfs_catalogo.dtos.auth.ContactFormRequest;
 import org.eduardomaravill.nfs_catalogo.models.users_models.User;
 
 public interface IEmailService {
@@ -10,4 +11,6 @@ public interface IEmailService {
     void sendEmailWelcome(User user);
 
     void  sendEmailResetPasswordSuccess(User user);
+
+    void sendContactEmail(ContactFormRequest contactFormRequest);
 }

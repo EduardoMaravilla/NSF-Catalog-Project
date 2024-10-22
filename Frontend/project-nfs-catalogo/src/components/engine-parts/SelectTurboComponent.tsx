@@ -31,6 +31,7 @@ export const SelectTurboComponent: FC<SelectTurboComponentProps> = ({
     <Form.Select
       name={name}
       size="sm"
+      className="text-wrap fw-bold"
       style={{
         backgroundColor: getColorLevel(turboSelected.levelDto.id),
         color: "white",
@@ -42,9 +43,10 @@ export const SelectTurboComponent: FC<SelectTurboComponentProps> = ({
         <option
           key={turbo.id}
           value={turbo.id}
+          className="fw-medium"
           style={{
             backgroundColor: getColorLevel(turbo.levelDto.id),
-            color: "black",
+            color: "white",
           }}
         >
           {t(traduction[turbo.turboTypeDto.id])}

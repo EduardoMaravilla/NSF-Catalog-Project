@@ -31,6 +31,7 @@ export const SelectStreetTypeComponent: FC<SelectStreetTypeComponentProps> = ({
     <Form.Select
       name={name}
       size="sm"
+      className="fw-bold"
       style={{
         backgroundColor: getColorLevel(streetType.levelDto.id),
         color: "white",
@@ -38,10 +39,19 @@ export const SelectStreetTypeComponent: FC<SelectStreetTypeComponentProps> = ({
       value={streetType.id}
       onChange={(e) => setStreetType(parseInt(e.target.value))}
     >
-      {streetTypes.map((sT) =>(<option key={sT.id} value={sT.id} style={{
+      {streetTypes.map((sT) => (
+        <option
+          key={sT.id}
+          value={sT.id}
+          className="fw-medium"
+          style={{
             backgroundColor: getColorLevel(sT.levelDto.id),
-            color: "black",
-          }}>{t(traduction[sT.streetTypeDto.id])}</option>))}
+            color: "white",
+          }}
+        >
+          {t(traduction[sT.streetTypeDto.id])}
+        </option>
+      ))}
     </Form.Select>
   );
 };

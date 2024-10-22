@@ -5,7 +5,6 @@ import {
   Form,
   Button,
   Card,
-  Spinner,
   Alert,
 } from "react-bootstrap";
 import { FC, useRef, useState } from "react";
@@ -26,6 +25,7 @@ import { ValidTokenResponse } from "../types/TypesUserLogin";
 import HReCaptchaComponent from "../components/utils/HReCaptchaComponent";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useRacerValidateReCaptcha } from "../services/racer/useRacerValidateReCaptcha";
+import SpinnerComponent from "../components/utils/SpinnerComponent";
 
 type CreateAccountPageProps = {
   t: (key: string) => string;
@@ -198,9 +198,13 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
   return (
     <Container className="d-flex justify-content-center align-items-center w-100 my-2">
       <Row className="w-100">
-        <Col md={6} lg={10} className="d-flex justify-content-center align-items-center mx-auto">
-          <Card>
-            <Card.Header className="text-center fw-bold">
+        <Col
+          md={6}
+          lg={10}
+          className="d-flex justify-content-center align-items-center mx-auto"
+        >
+          <Card className="profile-card text-light border border-primary">
+            <Card.Header className="text-center fw-bold fs-3">
               {t("createAccountTitle")}
             </Card.Header>
             <Card.Body>
@@ -273,14 +277,18 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
                 onSubmit={async (event) => await onSubmitCreateAccount(event)}
               >
                 <Form.Group className="mb-3">
-                  <Form.Label htmlFor="nameRegister" className="fw-bold">
+                  <Form.Label htmlFor="nameRegister" className="fw-bold fs-5">
                     {t("cAName")}
+                    <span className="text-danger fs-6">
+                      <sup>*</sup>
+                    </span>
                   </Form.Label>
                   <Form.Control
                     id="nameRegister"
                     name="name"
                     type="text"
                     value={name}
+                    className="fw-medium"
                     placeholder={t("cANameText")}
                     onChange={onInputChange}
                     autoComplete="name"
@@ -294,13 +302,20 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
                   </Form.Text>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label htmlFor="usernameRegister" className="fw-bold">
+                  <Form.Label
+                    htmlFor="usernameRegister"
+                    className="fw-bold fs-5"
+                  >
                     {t("cAUsername")}
+                    <span className="text-danger fs-6">
+                      <sup>*</sup>
+                    </span>
                   </Form.Label>
                   <Form.Control
                     id="usernameRegister"
                     name="username"
                     type="text"
+                    className="fw-medium"
                     value={username}
                     placeholder={t("cAUsernameText")}
                     onChange={onInputChange}
@@ -317,14 +332,18 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
                   </Form.Text>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label htmlFor="emailRegister" className="fw-bold">
+                  <Form.Label htmlFor="emailRegister" className="fw-bold fs-5">
                     {t("cAEmail")}
+                    <span className="text-danger fs-6">
+                      <sup>*</sup>
+                    </span>
                   </Form.Label>
                   <Form.Control
                     id="emailRegister"
                     name="email"
                     type="email"
                     value={email}
+                    className="fw-medium"
                     placeholder={t("cAEmailText")}
                     onChange={onInputChange}
                     autoComplete="email"
@@ -342,15 +361,19 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
                     <Col>
                       <Form.Label
                         htmlFor="passwordRegister"
-                        className="fw-bold"
+                        className="fw-bold fs-5"
                       >
                         {t("cAPassword")}
+                        <span className="text-danger fs-6">
+                          <sup>*</sup>
+                        </span>
                       </Form.Label>
                     </Col>
                     <Col>
                       <Form.Check
                         id="showPassword"
                         name="showPassword"
+                        className="fw-medium"
                         reverse
                         label={t("showPassword")}
                         type="checkbox"
@@ -367,6 +390,7 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
                     value={password}
                     placeholder={t("cAPasswordText")}
                     onChange={onInputChange}
+                    className="fw-medium"
                     autoComplete="new-password webauthn"
                     disabled={isLogined}
                     required
@@ -382,13 +406,17 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
                 <Form.Group className="mb-3">
                   <Form.Label
                     htmlFor="repeatPasswordRegister"
-                    className="fw-bold"
+                    className="fw-bold fs-5"
                   >
                     {t("cAConfirmPassword")}
+                    <span className="text-danger fs-6">
+                      <sup>*</sup>
+                    </span>
                   </Form.Label>
                   <Form.Control
                     id="repeatPasswordRegister"
                     name="repeatedPassword"
+                    className="fw-medium"
                     type={showPassword ? "text" : "password"}
                     value={repeatedPassword}
                     placeholder={t("cAConfirmPasswordText")}
@@ -445,19 +473,12 @@ const CreateAccountPage: FC<CreateAccountPageProps> = ({ t }) => {
                   <HReCaptchaComponent onVerify={onVerifyCaptcha} />
                 ) : null}
                 {isLogined ? (
-                  <Form.Group>
-                    <Form.Label
-                      htmlFor="password"
-                      className="d-flex justify-content-center align-items-center"
-                    >
-                      <Spinner animation="border" variant="primary" />
-                    </Form.Label>
-                  </Form.Group>
+                  <SpinnerComponent />
                 ) : (
                   <Button
                     variant="primary"
                     type="submit"
-                    className="w-100 mt-3"
+                    className="w-100 mt-3 my-2"
                     disabled={isLogined || captchaToken === null}
                   >
                     {t("cAConfirmButton")}

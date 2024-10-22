@@ -40,6 +40,7 @@ export const SelectAuxiliaryComponent: FC<
     <Form.Select
       name={name}
       size="sm"
+      className="fw-bold"
       style={{
         backgroundColor: getColorLevel(auxiliar.levelDto.id),
         color: "white",
@@ -48,7 +49,7 @@ export const SelectAuxiliaryComponent: FC<
       onChange={(e) => setAuxiliar(parseInt(e.target.value))}
     >
       {auxiliars.map((aux) => (
-        <option key={aux.id} value={aux.id} style={{
+        <option key={aux.id} value={aux.id} className="fw-medium" style={{
           backgroundColor: getColorLevel(aux.levelDto.id),
           color: "white",
         }}>

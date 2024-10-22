@@ -15,6 +15,7 @@ import "./assets/styles/CheckIcon.css";
 import "./assets/styles/MainRoot.css";
 import "./assets/styles/loginPage.css";
 import "./assets/styles/profilePage.css";
+import "./assets/styles/CreateBuildPage.css"
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>

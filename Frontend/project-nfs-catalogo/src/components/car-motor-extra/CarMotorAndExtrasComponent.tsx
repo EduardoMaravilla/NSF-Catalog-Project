@@ -7,10 +7,16 @@ import {
   initialCarConfiguration,
 } from "../../types/TypeCars";
 
-import { FC } from "react";
+import { FC, useRef, useState } from "react";
 import { SelectAuxiliaryComponent } from "./SelectAuxiliaryComponent";
 import { SelectEngineComponent } from "./SelectEngineComponent";
-import { getColorLevel } from "../../utilities/funcionExport";
+import { getColorLevel, isApiResponseError } from "../../utilities/funcionExport";
+import HReCaptchaComponent from "../utils/HReCaptchaComponent";
+import { useRacerValidateReCaptcha } from "../../services/racer/useRacerValidateReCaptcha";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { useAuth } from "../../context/auth/useAuth";
+import { AuthenticationContext } from "../../context/auth/AuthenticationContext";
+import { ValidTokenResponse } from "../../types/TypesUserLogin";
 
 type CarMotorAndExtrasComponentProps = {
   t: (key: string) => string;
@@ -18,12 +24,18 @@ type CarMotorAndExtrasComponentProps = {
   setCarConfig: (config: CarConfigurationDto) => void;
 };
 
-export const CarMotorAndExtrasComponent: FC<CarMotorAndExtrasComponentProps> = ({
-  t,
-  carConfig,
-  setCarConfig,
-}) => {
+export const CarMotorAndExtrasComponent: FC<
+  CarMotorAndExtrasComponentProps
+> = ({ t, carConfig, setCarConfig }) => {
   const { engines, auxiliars } = useLoadBasicData(LoadBasicDataContext);
+  const { isAuthenticated, isLogined, setIsLogined } = useAuth(
+    AuthenticationContext
+  );
+
+  const captchaService = useRacerValidateReCaptcha();
+
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const captchaRef = useRef<HCaptcha | null>(null);
 
   const updateAuxliaryOne = (auxSelected: number) => {
     const aux = auxiliars.find((a) => a.id === auxSelected);
@@ -65,6 +77,11 @@ export const CarMotorAndExtrasComponent: FC<CarMotorAndExtrasComponentProps> = (
   };
 
   const onResetButton = () => {
+    const confirmed: boolean = window.confirm(t("confirmResetButton"));
+    if (!confirmed) {
+      return;
+    }
+
     const newCarConfig: CarConfigurationDto = { ...initialCarConfiguration };
     const newDriverDto: DriverDto = {
       id: null,
@@ -82,16 +99,53 @@ export const CarMotorAndExtrasComponent: FC<CarMotorAndExtrasComponentProps> = (
     );
   };
 
+  const resetCaptcha = () => {
+    if (captchaRef.current) {
+      captchaRef.current.resetCaptcha();
+      setCaptchaToken(null);
+    }
+  };
+
+  const onVerifyCaptcha = (token: string | null) => {
+    setCaptchaToken(token);
+  };
+
+  const onSaveButton = async () => {
+    setIsLogined(true);
+
+    if (!captchaToken) {
+      alert(t("captchaAlertError"));
+      return;
+    }
+    captchaService.chargeCaptchaTokenInOptions(captchaToken);
+    const captchaResponse = await captchaService.getFetch();
+    console.log(captchaResponse);
+    if (isApiResponseError(captchaResponse.data)) {
+      resetCaptcha();
+      setIsLogined(false);
+      alert(t("captchaValidationError"));
+      return;
+    }
+    const validCaptcha = captchaResponse.data as ValidTokenResponse;
+    if (!validCaptcha.valid) {
+      resetCaptcha();
+      setIsLogined(false);
+      alert(t("captchaValidationError"));
+      return;
+    }
+
+  }
+
   return (
-    <Card>
-      <Card.Header className="text-center">
+    <Card className="h-100 text-light profile-card  border border-primary-subtle">
+      <Card.Header className="text-center fw-bold fs-5">
         {t("motorAndAuxiliaryTitle")}
       </Card.Header>
       <Card.Body>
         <Row>
           <Col>
-            <Card>
-              <Card.Header className="text-center">
+            <Card className="without-background border border-primary-subtle">
+              <Card.Header className="text-center text-light fw-bold">
                 {t("auxiliaryOne")}
               </Card.Header>
               <Card.Body>
@@ -106,8 +160,8 @@ export const CarMotorAndExtrasComponent: FC<CarMotorAndExtrasComponentProps> = (
             </Card>
           </Col>
           <Col>
-            <Card>
-              <Card.Header className="text-center">
+            <Card className="without-background border border-primary-subtle">
+              <Card.Header className="text-center text-light fw-bold">
                 {t("auxiliaryTwo")}
               </Card.Header>
               <Card.Body>
@@ -124,8 +178,8 @@ export const CarMotorAndExtrasComponent: FC<CarMotorAndExtrasComponentProps> = (
         </Row>
         <Row className="justify-content-around align-items-center my-2">
           <Col>
-            <Card>
-              <Card.Header className="text-center text-wrap">
+            <Card className="without-background border border-primary-subtle">
+              <Card.Header className="text-center text-light fw-bold">
                 {t("engineTitle")}
               </Card.Header>
               <Card.Body>
@@ -138,22 +192,42 @@ export const CarMotorAndExtrasComponent: FC<CarMotorAndExtrasComponentProps> = (
               </Card.Body>
             </Card>
           </Col>
+        </Row>
+        {isAuthenticated ? (
+          <Row>
+            <HReCaptchaComponent onVerify={onVerifyCaptcha} />
+          </Row>
+        ) : null}
+        <Row className="">
           <Col>
-            <Row className="my-2">
-              <Button variant="info" type="reset" onClick={onResetButton}>
-                {t("resetButton")}
-              </Button>
-            </Row>
-            <Row>
-              <Button variant="success">{t("saveButton")}</Button>
-            </Row>
+            <Button
+              className="w-100 border text-light fw-bold"
+              variant="info"
+              type="reset"
+              onClick={onResetButton}
+              disabled={isLogined}
+            >
+              {t("resetButton")}
+            </Button>
+          </Col>
+          <Col>
+            <Button
+              className="w-100 text-light fw-bold"
+              variant="success"
+              type="button"
+              onClick={async () => await onSaveButton()}
+              disabled={isLogined || captchaToken === null}
+            >
+              {t("saveButton")}
+            </Button>
           </Col>
         </Row>
         <hr />
         <Row className="justify-content-between align-items-center my-3">
           <Col>
             <h6>
-              <span className="showColorLevel"
+              <span
+                className="showColorLevel"
                 style={{
                   background: getColorLevel(1),
                 }}
@@ -164,7 +238,8 @@ export const CarMotorAndExtrasComponent: FC<CarMotorAndExtrasComponentProps> = (
           </Col>
           <Col>
             <h6>
-              <span className="showColorLevel"
+              <span
+                className="showColorLevel"
                 style={{
                   background: getColorLevel(2),
                 }}
@@ -175,7 +250,8 @@ export const CarMotorAndExtrasComponent: FC<CarMotorAndExtrasComponentProps> = (
           </Col>
           <Col>
             <h6>
-              <span className="showColorLevel"
+              <span
+                className="showColorLevel"
                 style={{
                   background: getColorLevel(3),
                 }}
@@ -186,7 +262,8 @@ export const CarMotorAndExtrasComponent: FC<CarMotorAndExtrasComponentProps> = (
           </Col>
           <Col>
             <h6>
-              <span className="showColorLevel"
+              <span
+                className="showColorLevel"
                 style={{
                   background: getColorLevel(4),
                 }}
@@ -197,7 +274,8 @@ export const CarMotorAndExtrasComponent: FC<CarMotorAndExtrasComponentProps> = (
           </Col>
           <Col>
             <h6>
-              <span className="showColorLevel"
+              <span
+                className="showColorLevel"
                 style={{
                   background: getColorLevel(5),
                 }}

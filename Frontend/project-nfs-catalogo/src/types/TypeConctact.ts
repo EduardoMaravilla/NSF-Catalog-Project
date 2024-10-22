@@ -1,14 +1,8 @@
 import { CarConfigurationDto } from "./TypeCars";
 import { AuthenticationResponse } from "./TypesUserLogin";
 
-export interface ContactForm {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}
 
-export interface UserProfileContext{
+export interface UserProfileContext {
   userProfile: UserProfileResponse;
   setUserProfile: (userProfile: UserProfileResponse) => void;
 }
@@ -21,13 +15,13 @@ export interface UserProfileResponse {
   color: string;
 }
 
-export interface UserEditProfileRequest{
+export interface UserEditProfileRequest {
   nameEdit: string;
   usernameEdit: string;
   emailEdit: string;
   roleEdit: string;
   passwordEdit: string;
-  colorEdit:string;
+  colorEdit: string;
 }
 
 export interface NewUserProfileReponse {
@@ -37,10 +31,10 @@ export interface NewUserProfileReponse {
 
 export interface CarConfigRequest {
   userProfile: UserProfileResponse;
-  carConfigDto: CarConfigurationDto;  
+  carConfigDto: CarConfigurationDto;
 }
 
-export interface UserSaveDto{
+export interface UserSaveDto {
   name: string;
   username: string;
   email: string;
@@ -49,12 +43,19 @@ export interface UserSaveDto{
 }
 
 export interface UpdatePasswordRequest {
-  password : string;
+  password: string;
   confirmPassword: string;
 }
 
-export interface NewUpdatePasswordRequest{
+export interface NewUpdatePasswordRequest {
   currentPassword: string;
   newPassword: string;
   confirmNewPassword: string;
+}
+
+export interface ContactFormRequest {
+  nameContact: string;
+  emailContact: string;
+  subjectContact: string;
+  messageContact: string;
 }

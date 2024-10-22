@@ -20,4 +20,5 @@ public interface IAuthenticationService {
     ValidTokenResponse verifyReCaptchaToken(String token);
     NewUserProfileResponse profilePasswordUpdate(HttpServletRequest request, NewUpdatePasswordRequest newUpdatePasswordRequest);
 
+    ValidTokenResponse sendContactEmail(ContactFormRequest contactFormRequest);
 }

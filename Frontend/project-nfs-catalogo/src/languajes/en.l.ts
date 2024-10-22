@@ -112,6 +112,7 @@ export const en = {
     motorAndAuxiliaryTitle: "Motor & Auxiliaries",
     auxiliaryOne: "Auxiliary 1",
     auxiliaryTwo: "Auxiliary 2",
+    confirmResetButton: "Are you sure you want to delete progress?",
 
     //Auxiliaries
     emptySpace: "Empty space",
@@ -188,7 +189,34 @@ export const en = {
     termsAndContitionsChanges:
       "We reserve the right to modify these terms at any time.",
     termsAndContitionsError:
-      "You must accept the terms and conditions to proceed",
+      "You must accept the terms and conditions to proceed.",
+    termsAndContitionsSection1Title: "Acceptance of the Terms:",
+    termsAndContitionsSection1Content:
+      "By registering and using our website, the user agrees to comply with these terms and conditions. We reserve the right to modify these terms at any time, and it is recommended to review this page periodically to stay informed of any changes.",
+    termsAndContitionsSection2Title: "Registration and Account Use:",
+    termsAndContitionsSection2Content:
+      "Users must register with accurate and up-to-date information. Each user is responsible for the security of their account and for maintaining the confidentiality of their login credentials. The creation of multiple accounts by the same person is not allowed.",
+    termsAndContitionsSection3Title: "Creation and Storage of Configurations:",
+    termsAndContitionsSection3Content:
+      "Upon registration, users can save their own game configurations. These configurations are visible to other users and can be shared on the website. We are not responsible for the loss or modification of stored configurations.",
+    termsAndContitionsSection4Title: "Proper Use of the Site:",
+    termsAndContitionsSection4Content:
+      "This site is intended to be a catalog for sharing configurations related to the Need for Speed video game. Any misuse, such as posting offensive, inappropriate content or infringing on the rights of others, is prohibited. We reserve the right to remove such content and suspend or delete accounts in case of violation of this policy.",
+    termsAndContitionsSection5Title: "Intellectual Property Rights:",
+    termsAndContitionsSection5Content:
+      "The original content of the site, such as the design, text, and other graphics, is owned by @SDD-CATALOG. Users' configurations are owned by the users who create them, but by posting them on the site, the user grants @SDD-CATALOG a non-exclusive license to display such configurations in the catalog.",
+    termsAndContitionsSection6Title: "Limitation of Liability:",
+    termsAndContitionsSection6Content:
+      "@SDD-CATALOG is not responsible for potential service interruptions, errors, or data loss. The website is provided 'as is', without any warranties of any kind, either express or implied.",
+    termsAndContitionsSection7Title: "Privacy Policy:",
+    termsAndContitionsSection7Content:
+      "Personal information provided by users during registration is protected in accordance with our Privacy Policy. We do not share personal information with third parties without the user's explicit consent.",
+    termsAndContitionsSection8Title: "Service Modifications:",
+    termsAndContitionsSection8Content:
+      "We reserve the right to modify, suspend, or discontinue any part of the service at any time without prior notice.",
+    termsAndContitionsSection9Title: "Applicable Law:",
+    termsAndContitionsSection9Content:
+      "These terms and conditions will be governed in accordance with the laws of the Republic of El Salvador. Any dispute related to these terms will be resolved in the competent courts of El Salvador.",
 
     //Verify email
 
@@ -212,5 +240,21 @@ export const en = {
     forgotPasswordResetButton: "Reset Password",
     forgotPasswordResetSuccessMessage:
       "Password successfully changed, you can now log in again.",
+
+    //Contact Form Page
+    pageContactTitle: "Contact Us",
+    pageContactText:
+      "If you have any questions or need assistance, don't hesitate to contact us.",
+    pageContactName: "Name",
+    pageContactNameText: "Enter your name or alias",
+    pageContactEmail: "Email Address",
+    pageContactEmailText: "Enter your email address",
+    pageContactSubject: "Subject",
+    pageContactSubjectText: "Enter the subject of your inquiry",
+    pageContactMessage: "Message",
+    pageContactMessageText: "Write your message here",
+    pageContactSubmit: "Send",
+    pageContactSuccessMessage: "Your message has been sent successfully",
+    pageContactError: "Message could not be sent, please try again later",
   },
 };

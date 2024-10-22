@@ -18,7 +18,10 @@ import { AuthenticationContext } from "../auth/AuthenticationContext";
 import { useAuth } from "../auth/useAuth";
 import { LoadBasicDataContext } from "./LoadBasicDataContext";
 import { useAuxiliariesService } from "../../services/car-data/useAuxiliariesService";
-import { isApiResponseError, loadDataFromLocalStorage } from "../../utilities/funcionExport";
+import {
+  isApiResponseError,
+  loadDataFromLocalStorage,
+} from "../../utilities/funcionExport";
 import { useCarsService } from "../../services/car-data/useCarsService";
 import { useClassesService } from "../../services/car-data/useClassesService";
 import { useEnginesService } from "../../services/car-data/useEnginesService";
@@ -31,8 +34,6 @@ import { useSuspensionsService } from "../../services/car-data/useSuspensionsSer
 import { useTiresService } from "../../services/car-data/useTiresService";
 import { useTurbosService } from "../../services/car-data/useTurbosService";
 import { useTurboTypesService } from "../../services/car-data/useTurboTypesService";
-
-
 
 export const LoadBasicDataProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -64,10 +65,9 @@ export const LoadBasicDataProvider: React.FC<{ children: React.ReactNode }> = ({
   const tiresService = useTiresService();
   const turbosService = useTurbosService();
   const turboTypesService = useTurboTypesService();
-  
 
-  useEffect(() => {    
-    const loadData = async (val:number) => {
+  useEffect(() => {
+    const loadData = async (val: number) => {
       //Load data from local storage
       let count = val;
       const savedAuxiliaries =
@@ -141,7 +141,7 @@ export const LoadBasicDataProvider: React.FC<{ children: React.ReactNode }> = ({
         count++;
       }
       //Load Data from server
-      
+
       if (count !== 13 && isAuthenticated && jwtToken) {
         //Load auxiliries
         auxiliariesService.chargeTokenInOptions(jwtToken);
@@ -172,7 +172,17 @@ export const LoadBasicDataProvider: React.FC<{ children: React.ReactNode }> = ({
             );
             setCars([]);
           } else {
-            setCars(carsFetch.data);
+            setCars(
+              carsFetch.data.sort((a, b) => {
+                const makerComparison = a.makerDto.name.localeCompare(
+                  b.makerDto.name
+                );
+                if (makerComparison !== 0) {
+                  return makerComparison; 
+                }
+                return a.model.localeCompare(b.model);
+              })
+            );
             localStorage.setItem("cars", JSON.stringify(carsFetch.data));
           }
         }
@@ -202,12 +212,14 @@ export const LoadBasicDataProvider: React.FC<{ children: React.ReactNode }> = ({
             );
             setEngines([]);
           } else {
-            setEngines(enginesFetch.data.sort((a, b) => {
-              if (a.levelDto.id !== b.levelDto.id) {
-                return a.levelDto.id - b.levelDto.id;
-              }
-              return a.liters - b.liters;
-            }));
+            setEngines(
+              enginesFetch.data.sort((a, b) => {
+                if (a.levelDto.id !== b.levelDto.id) {
+                  return a.levelDto.id - b.levelDto.id;
+                }
+                return a.liters - b.liters;
+              })
+            );
             localStorage.setItem("engines", JSON.stringify(enginesFetch.data));
           }
         }
@@ -361,8 +373,7 @@ export const LoadBasicDataProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     };
     loadData(0);
-  },[isAuthenticated]);// eslint-disable-line react-hooks/exhaustive-deps
-  
+  }, [isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <LoadBasicDataContext.Provider

@@ -39,6 +39,9 @@ const SliderDownForceComponent: FC<SliderDownForceComponentProps> = ({
           >
             {t("downForce")}
           </Typography>
+          <Typography variant="body2" sx={{ fontSize: "0.75rem" }}>
+            {carConfig.driverDto.downForce}
+          </Typography>
         </Box>
         <Slider
           step={1}

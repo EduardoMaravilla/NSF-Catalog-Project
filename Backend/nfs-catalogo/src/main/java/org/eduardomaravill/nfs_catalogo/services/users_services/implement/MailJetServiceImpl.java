@@ -7,6 +7,7 @@ import com.mailjet.client.transactional.TrackOpens;
 import com.mailjet.client.transactional.TransactionalEmail;
 import com.mailjet.client.transactional.response.SendEmailsResponse;
 import com.mailjet.client.transactional.response.SentMessageStatus;
+import org.eduardomaravill.nfs_catalogo.dtos.auth.ContactFormRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.EmailResponse;
 import org.eduardomaravill.nfs_catalogo.exceptions.InvalidEmailException;
 import org.eduardomaravill.nfs_catalogo.models.users_models.User;
@@ -27,6 +28,9 @@ public class MailJetServiceImpl implements IEmailService {
 
     @Value("${mj.email.username}")
     private String username;
+
+    @Value("${mj.contact.email}")
+    private String contactEmail;
 
     private final TemplateEngine templateEngine;
 
@@ -95,6 +99,21 @@ public class MailJetServiceImpl implements IEmailService {
         sendEmail(emailResponse);
     }
 
+    @Override
+    public void sendContactEmail(ContactFormRequest contactFormRequest) {
+        EmailResponse emailResponse = new EmailResponse();
+        List<SendContact> to = new ArrayList<>();
+        to.add(new SendContact(contactEmail, "Support"));
+        emailResponse.setTo(to);
+        emailResponse.setCc(Collections.emptyList());
+        emailResponse.setBcc(Collections.emptyList());
+        emailResponse.setFrom(new SendContact(username,"NFS-CATALOG"));
+        emailResponse.setSubject(contactFormRequest.getSubjectContact());
+        emailResponse.setBody(loadHtmlBodyContact(contactFormRequest));
+        sendEmail(emailResponse);
+
+    }
+
     private void sendEmail(EmailResponse emailResponse) {
         TransactionalEmail message = TransactionalEmail
                 .builder()
@@ -147,5 +166,14 @@ public class MailJetServiceImpl implements IEmailService {
         Context context = new Context();
         context.setVariable("username", username);
         return templateEngine.process("emailResetPasswordSuccess.html", context);
+    }
+
+    private String loadHtmlBodyContact(ContactFormRequest contactFormRequest) {
+        Context context = new Context();
+        context.setVariable("name", contactFormRequest.getNameContact());
+        context.setVariable("email", contactFormRequest.getEmailContact());
+        context.setVariable("subject", contactFormRequest.getSubjectContact());
+        context.setVariable("message", contactFormRequest.getMessageContact());
+        return templateEngine.process("emailContact.html", context);
     }
 }

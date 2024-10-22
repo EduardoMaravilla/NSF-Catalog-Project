@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_API_URL_Auht_Logout: string;
   readonly VITE_API_URL_Auht_Validtoken: string;
   readonly VITE_API_URL_Auht_Profile: string;
+  readonly VITE_API_URL_Auht_Contact: string;
   /*Racer*/
   readonly VITE_API_URL_Reset_Password: string;
   readonly VITE_API_URL_Racer_Register : string;

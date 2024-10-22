@@ -4,8 +4,8 @@ import { FaAddressCard, FaUser } from "react-icons/fa";
 import { IoIosPeople } from "react-icons/io";
 import { MdCreateNewFolder } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/auth/useAuth";
-import { AuthenticationContext } from "../context/auth/AuthenticationContext";
+import { useAuth } from "../../context/auth/useAuth";
+import { AuthenticationContext } from "../../context/auth/AuthenticationContext";
 
 type NavBarMobileProps = {
   t: (key: string) => string;

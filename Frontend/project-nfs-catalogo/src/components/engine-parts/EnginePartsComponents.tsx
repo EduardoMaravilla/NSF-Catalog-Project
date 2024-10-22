@@ -7,6 +7,7 @@ import { LoadBasicDataContext } from "../../context/load-basic-data/LoadBasicDat
 import { SelectTurboComponent } from "./SelectTurboComponent";
 import { SelectStreetTypeComponent } from "./SelectStreetTypeComponent";
 import { SelectGearComponent } from "./SelectGearComponent";
+import useWindowSize from "../../hooks/useWindowSize";
 
 type EnginePartsComponentProps = {
   t: (key: string) => string;
@@ -21,6 +22,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
 }) => {
   const { levels, turbos, suspensions, tires, gears } =
     useLoadBasicData(LoadBasicDataContext);
+  const { width } = useWindowSize();
 
   const updateInductionLevel = (levelSelected: number) => {
     const level = levels.find((l) => l.id === levelSelected);
@@ -178,202 +180,404 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
   };
 
   return (
-    <Card>
-      <Card.Header className="text-center">
+    <Card className="h-100 text-light profile-card  border border-primary-subtle">
+      <Card.Header className="text-center fw-bold fs-5">
         {t("carConfigurationTitle")}
       </Card.Header>
-      <Card.Body className="justify-content-around align-items-center">
-        <Row>
-          <Col style={{ width: "100%" }}>
-            <Card>
-              <Card.Header className="text-center text-wrap">
-                {t("carInduction")}
-              </Card.Header>
-              <Card.Body>
-                <SelectLevelComponent
-                  name="selectInductionLevel"
-                  t={t}
-                  selectedLevel={carConfig.inductionLevelDto.id}
-                  setSelectedLevel={updateInductionLevel}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col style={{ width: "100%" }}>
-            <Card>
-              <Card.Header className="text-center text-wrap">
-                {t("carEcu")}
-              </Card.Header>
-              <Card.Body>
-                <SelectLevelComponent
-                  name="selectEcuLevel"
-                  t={t}
-                  selectedLevel={carConfig.ecuLevelDto.id}
-                  setSelectedLevel={updateEcuLevel}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col style={{ width: "100%" }}>
-            <Card>
-              <Card.Header className="text-center text-wrap">
-                {t("carInjertor")}
-              </Card.Header>
-              <Card.Body>
-                <SelectLevelComponent
-                  name="selectinjectionLevel"
-                  t={t}
-                  selectedLevel={carConfig.injectionLevelDto.id}
-                  setSelectedLevel={updateInjLevel}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-        <Row className="my-2">
-          <Col style={{ width: "100%" }}>
-            <Card>
-              <Card.Header className="text-center text-wrap">
-                {t("carExhaust")}
-              </Card.Header>
-              <Card.Body>
-                <SelectLevelComponent
-                  name="selectExhaustLevel"
-                  t={t}
-                  selectedLevel={carConfig.escapeLevelDto.id}
-                  setSelectedLevel={updateExhaustLevel}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col style={{ width: "100%" }}>
-            <Card>
-              <Card.Header className="text-center text-wrap">
-                {t("carTurbo")}
-              </Card.Header>
-              <Card.Body>
-                <SelectTurboComponent
-                  name="selectTurbo"
-                  turbos={turbos}
-                  t={t}
-                  turboSelected={carConfig.turboDto}
-                  setTurboSelected={updateTurbo}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col style={{ width: "100%" }}>
-            <Card>
-              <Card.Header className="text-center text-wrap">
-                {t("carNitro")}
-              </Card.Header>
-              <Card.Body>
-                <SelectLevelComponent
-                  name="selectNitroLevel"
-                  t={t}
-                  selectedLevel={carConfig.nitroLevelDto.id}
-                  setSelectedLevel={updateNitroLevel}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-        <Row className="my-2">
-          <Col style={{ width: "100%" }}>
-            <Card>
-              <Card.Header className="text-center text-wrap">
-                {t("carSuspension")}
-              </Card.Header>
-              <Card.Body>
-                <SelectStreetTypeComponent
-                  name="selectSuspension"
-                  t={t}
-                  streetType={carConfig.suspensionDto}
-                  streetTypes={suspensions}
-                  setStreetType={updateSuspension}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col style={{ width: "100%" }}>
-            <Card>
-              <Card.Header className="text-center text-wrap">
-                {t("carBrakes")}
-              </Card.Header>
-              <Card.Body>
-                <SelectLevelComponent
-                  name="selectBrakeLevel"
-                  t={t}
-                  selectedLevel={carConfig.brakeLevelDto.id}
-                  setSelectedLevel={updateBrakeLevel}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col style={{ width: "100%" }}>
-            <Card>
-              <Card.Header className="text-center text-wrap">
-                {t("carTires")}
-              </Card.Header>
-              <Card.Body>
-                <SelectStreetTypeComponent
-                  name="selectTire"
-                  t={t}
-                  streetType={carConfig.tireDto}
-                  streetTypes={tires}
-                  setStreetType={updateTire}
-                />
-              </Card.Body>
-            </Card>
-          </Col>          
-        </Row>
-        <Row className="my-2">
-        <Col style={{ width: "100%" }}>
-            <Card>
-              <Card.Header className="text-center text-wrap">
-                {t("carClutch")}
-              </Card.Header>
-              <Card.Body>
-                <SelectLevelComponent
-                  name="selectEmbragueLevel"
-                  t={t}
-                  selectedLevel={carConfig.embregueLevelDto.id}
-                  setSelectedLevel={updateEmbragueLevel}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col style={{ width: "100%" }}>
-            <Card>
-              <Card.Header className="text-center text-wrap">
-                {t("carGears")}
-              </Card.Header>
-              <Card.Body>
-                <SelectGearComponent
-                  name="selectGear"
-                  gear={carConfig.gearDto}
-                  gears={gears}
-                  setGear={updateGear}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col style={{ width: "100%" }}>
-            <Card>
-              <Card.Header className="text-center text-wrap">
-                {t("carDiferential")}
-              </Card.Header>
-              <Card.Body>
-                <SelectLevelComponent
-                  name="selectDifferentialLevel"
-                  t={t}
-                  selectedLevel={carConfig.differencialLevelDto.id}
-                  setSelectedLevel={updateDifferentialLevel}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+      <Card.Body>
+        {width > 992 ? (
+          <>
+            <Row>
+              <Col style={{ width: "100%" }}>
+                <Card className="h-100 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap" >
+                    {t("carInduction")}
+                  </Card.Header>
+                  <Card.Body className="d-flex align-items-center">
+                    <SelectLevelComponent
+                      name="selectInductionLevel"
+                      t={t}
+                      selectedLevel={carConfig.inductionLevelDto.id}
+                      setSelectedLevel={updateInductionLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col style={{ width: "100%" }}>
+                <Card className="h-100 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carEcu")}
+                  </Card.Header>
+                  <Card.Body className="d-flex align-items-center">
+                    <SelectLevelComponent
+                      name="selectEcuLevel"
+                      t={t}
+                      selectedLevel={carConfig.ecuLevelDto.id}
+                      setSelectedLevel={updateEcuLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col style={{ width: "100%" }}>
+                <Card className="h-100 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carInjertor")}
+                  </Card.Header>
+                  <Card.Body className="d-flex align-items-center">
+                    <SelectLevelComponent
+                      name="selectinjectionLevel"
+                      t={t}
+                      selectedLevel={carConfig.injectionLevelDto.id}
+                      setSelectedLevel={updateInjLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <Row>
+              <Col style={{ width: "100%" }}>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carExhaust")}
+                  </Card.Header>
+                  <Card.Body className="d-flex align-items-center">
+                    <SelectLevelComponent
+                      name="selectExhaustLevel"
+                      t={t}
+                      selectedLevel={carConfig.escapeLevelDto.id}
+                      setSelectedLevel={updateExhaustLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col style={{ width: "100%" }}>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carTurbo")}
+                  </Card.Header>
+                  <Card.Body className="d-flex align-items-center">
+                    <SelectTurboComponent
+                      name="selectTurbo"
+                      turbos={turbos}
+                      t={t}
+                      turboSelected={carConfig.turboDto}
+                      setTurboSelected={updateTurbo}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col style={{ width: "100%" }}>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carNitro")}
+                  </Card.Header>
+                  <Card.Body className="d-flex align-items-center">
+                    <SelectLevelComponent
+                      name="selectNitroLevel"
+                      t={t}
+                      selectedLevel={carConfig.nitroLevelDto.id}
+                      setSelectedLevel={updateNitroLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <Row>
+              <Col style={{ width: "100%" }}>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carSuspension")}
+                  </Card.Header>
+                  <Card.Body>
+                    <SelectStreetTypeComponent
+                      name="selectSuspension"
+                      t={t}
+                      streetType={carConfig.suspensionDto}
+                      streetTypes={suspensions}
+                      setStreetType={updateSuspension}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col style={{ width: "100%" }}>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carBrakes")}
+                  </Card.Header>
+                  <Card.Body>
+                    <SelectLevelComponent
+                      name="selectBrakeLevel"
+                      t={t}
+                      selectedLevel={carConfig.brakeLevelDto.id}
+                      setSelectedLevel={updateBrakeLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col style={{ width: "100%" }}>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carTires")}
+                  </Card.Header>
+                  <Card.Body>
+                    <SelectStreetTypeComponent
+                      name="selectTire"
+                      t={t}
+                      streetType={carConfig.tireDto}
+                      streetTypes={tires}
+                      setStreetType={updateTire}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <Row>
+              <Col style={{ width: "100%" }}>
+                <Card className="my-2 h-100 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carClutch")}
+                  </Card.Header>
+                  <Card.Body className="d-flex align-items-center">
+                    <SelectLevelComponent
+                      name="selectEmbragueLevel"
+                      t={t}
+                      selectedLevel={carConfig.embregueLevelDto.id}
+                      setSelectedLevel={updateEmbragueLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col style={{ width: "100%" }}>
+                <Card className="my-2 h-100 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carGears")}
+                  </Card.Header>
+                  <Card.Body className="d-flex align-items-center">
+                    <SelectGearComponent
+                      name="selectGear"
+                      gear={carConfig.gearDto}
+                      gears={gears}
+                      setGear={updateGear}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col style={{ width: "100%" }}>
+                <Card className="my-2 h-100 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carDiferential")}
+                  </Card.Header>
+                  <Card.Body className="d-flex align-items-center">
+                    <SelectLevelComponent
+                      name="selectDifferentialLevel"
+                      t={t}
+                      selectedLevel={carConfig.differencialLevelDto.id}
+                      setSelectedLevel={updateDifferentialLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </>
+        ) : (
+          <>
+            <Row>
+              <Col>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carInduction")}
+                  </Card.Header>
+                  <Card.Body>
+                    <SelectLevelComponent
+                      name="selectInductionLevel"
+                      t={t}
+                      selectedLevel={carConfig.inductionLevelDto.id}
+                      setSelectedLevel={updateInductionLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carEcu")}
+                  </Card.Header>
+                  <Card.Body>
+                    <SelectLevelComponent
+                      name="selectEcuLevel"
+                      t={t}
+                      selectedLevel={carConfig.ecuLevelDto.id}
+                      setSelectedLevel={updateEcuLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Card className="h-100 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carInjertor")}
+                  </Card.Header>
+                  <Card.Body>
+                    <SelectLevelComponent
+                      name="selectinjectionLevel"
+                      t={t}
+                      selectedLevel={carConfig.injectionLevelDto.id}
+                      setSelectedLevel={updateInjLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col>
+                <Card className="h-100 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carExhaust")}
+                  </Card.Header>
+                  <Card.Body className="d-flex align-items-center">
+                    <SelectLevelComponent
+                      name="selectExhaustLevel"
+                      t={t}
+                      selectedLevel={carConfig.escapeLevelDto.id}
+                      setSelectedLevel={updateExhaustLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carTurbo")}
+                  </Card.Header>
+                  <Card.Body>
+                    <SelectTurboComponent
+                      name="selectTurbo"
+                      turbos={turbos}
+                      t={t}
+                      turboSelected={carConfig.turboDto}
+                      setTurboSelected={updateTurbo}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carNitro")}
+                  </Card.Header>
+                  <Card.Body>
+                    <SelectLevelComponent
+                      name="selectNitroLevel"
+                      t={t}
+                      selectedLevel={carConfig.nitroLevelDto.id}
+                      setSelectedLevel={updateNitroLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carSuspension")}
+                  </Card.Header>
+                  <Card.Body>
+                    <SelectStreetTypeComponent
+                      name="selectSuspension"
+                      t={t}
+                      streetType={carConfig.suspensionDto}
+                      streetTypes={suspensions}
+                      setStreetType={updateSuspension}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carBrakes")}
+                  </Card.Header>
+                  <Card.Body>
+                    <SelectLevelComponent
+                      name="selectBrakeLevel"
+                      t={t}
+                      selectedLevel={carConfig.brakeLevelDto.id}
+                      setSelectedLevel={updateBrakeLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carTires")}
+                  </Card.Header>
+                  <Card.Body>
+                    <SelectStreetTypeComponent
+                      name="selectTire"
+                      t={t}
+                      streetType={carConfig.tireDto}
+                      streetTypes={tires}
+                      setStreetType={updateTire}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col>
+                <Card className="my-2 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carClutch")}
+                  </Card.Header>
+                  <Card.Body>
+                    <SelectLevelComponent
+                      name="selectEmbragueLevel"
+                      t={t}
+                      selectedLevel={carConfig.embregueLevelDto.id}
+                      setSelectedLevel={updateEmbragueLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <Row >
+              <Col>
+                <Card className="my-2 h-100 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carGears")}
+                  </Card.Header>
+                  <Card.Body className="d-flex align-items-center">
+                    <SelectGearComponent
+                      name="selectGear"
+                      gear={carConfig.gearDto}
+                      gears={gears}
+                      setGear={updateGear}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col>
+                <Card className="my-2 h-100 text-light fw-medium without-background border border-primary-subtle">
+                  <Card.Header className="text-center text-wrap">
+                    {t("carDiferential")}
+                  </Card.Header>
+                  <Card.Body className="d-flex align-items-center">
+                    <SelectLevelComponent
+                      name="selectDifferentialLevel"
+                      t={t}
+                      selectedLevel={carConfig.differencialLevelDto.id}
+                      setSelectedLevel={updateDifferentialLevel}
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </>
+        )}
       </Card.Body>
     </Card>
   );

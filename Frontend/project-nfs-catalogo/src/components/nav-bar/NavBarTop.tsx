@@ -1,20 +1,17 @@
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/auth/useAuth";
-import { AuthenticationContext } from "../context/auth/AuthenticationContext";
-
-import { LogoutSuccesful } from "./modals-components/LogoutSuccesfulModal";
+import { useAuth } from "../../context/auth/useAuth";
+import { AuthenticationContext } from "../../context/auth/AuthenticationContext";
+import { useAuthLogoutService } from "../../services/auth/useAuthLogoutService";
 import { useState } from "react";
-import {
-  isApiResponseError,
-  isLogoutResponse,
-} from "../utilities/funcionExport";
-import { useAuthLogoutService } from "../services/auth/useAuthLogoutService";
-import { useCarConfiguration } from "../context/config-car/useCarConfiguration";
-import { CarConfigurationContext } from "../context/config-car/CarConfigurationContext";
-import { initialCarConfiguration } from "../types/TypeCars";
-import useWindowSize from "../hooks/useWindowSize";
-import useCurrentPath from "../hooks/useCurrentPath";
+import { useCarConfiguration } from "../../context/config-car/useCarConfiguration";
+import { CarConfigurationContext } from "../../context/config-car/CarConfigurationContext";
+import useWindowSize from "../../hooks/useWindowSize";
+import useCurrentPath from "../../hooks/useCurrentPath";
+import { isApiResponseError, isLogoutResponse } from "../../utilities/funcionExport";
+import { initialCarConfiguration } from "../../types/TypeCars";
+import { LogoutSuccesful } from "../modals-components/LogoutSuccesfulModal";
+
 
 type NavBarTopProps = {
   t: (key: string) => string;
@@ -77,20 +74,21 @@ const NavBarTop: React.FC<NavBarTopProps> = ({ t, changeLanguage }) => {
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         {width >= 992 ? (
-          <>
+          <div className="d-flex h-100 justify-content-center align-items-center">
             <img
+            className="mx-2"
               src="/icon.png"
               alt="Race Car"
-              style={{ marginLeft: "1vh" }}
               onClick={onClickTitle}
             />
-            <h2
-              style={{ color: "white", marginLeft: "1vh" }}
+            <p
+            className="fs-3 mx-2 text-nowrap"
+              style={{ color: "white"}}
               onClick={onClickTitle}
             >
               {t("title")}
-            </h2>
-          </>
+            </p>
+          </div>
         ) : null}
         <Container>
           {width < 992 ? (

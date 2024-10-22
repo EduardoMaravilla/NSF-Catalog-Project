@@ -19,24 +19,27 @@ const DriveConfigComponent: FC<DriveConfigComponentProps> = ({
   setCarConfig,
 }) => {
   return (
-    <Card>
-      <Card.Header className="text-center">{t("drivingConfig")}</Card.Header>
+    <Card className="profile-card text-light border border-primary-subtle">
+      <Card.Header className="text-center fw-bold fs-5">{t("drivingConfig")}</Card.Header>
       <Card.Body>
         <SliderDriverComponent
           t={t}
           carConfig={carConfig}
           setCarConfig={setCarConfig}
         />
+        <hr />
         <SliderDirectionComponent
           t={t}
           carConfig={carConfig}
           setCarConfig={setCarConfig}
         />
+        <hr />
         <SliderDownForceComponent
           t={t}
           carConfig={carConfig}
           setCarConfig={setCarConfig}
         />
+        <hr />
         <br />
         <ControlTractionComponent
           t={t}

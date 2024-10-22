@@ -1,4 +1,3 @@
-import { Box, Typography } from "@mui/material";
 import { ChangeEvent, FC } from "react";
 import { Form } from "react-bootstrap";
 import { CarConfigurationDto, InitSkidDto } from "../../types/TypeCars";
@@ -22,9 +21,9 @@ const InitSkidComponent: FC<InitSkidComponentProps> = ({
     const value = parseInt(event.target.value);
     const initSkid = initSkids.find(
       (initSkid: InitSkidDto) => initSkid.id === value
-    );    
+    );
     if (initSkid) {
-      const newCarConfig:CarConfigurationDto = { ...carConfig };
+      const newCarConfig: CarConfigurationDto = { ...carConfig };
       newCarConfig.driverDto.initSkidDto = initSkid;
       setCarConfig(newCarConfig);
       localStorage.setItem(
@@ -35,38 +34,37 @@ const InitSkidComponent: FC<InitSkidComponentProps> = ({
   };
 
   return (
-    <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
+    <Form.Group className="d-flex justify-content-between align-items-center">
+      <Form.Label
+        htmlFor="selectInitSkids"
+        className="text-light fw-bold text-nowrap text-decoration-underline me-3"
+        style={{ fontSize: "0.7rem" }}
       >
-        <Typography
-          variant="body2"
-          sx={{
-            fontSize: "0.65rem",
-            fontWeight: "bold",
-            textDecoration: "underline",
-          }}
-        >
-          {t("initSkid")}
-        </Typography>
-        <Form.Select
-          name="selectInitSkids"
-          size="sm"
-          value={carConfig.driverDto.initSkidDto.id}
-          onChange={handleChange}
-          style={{ fontSize: "0.65rem" }}
-        >
-          <option value={4}>{t("isDefault")}</option>
-          <option value={3}>{t("isAcc")}</option>
-          <option value={2}>{t("isBrake")}</option>
-          <option value={1}>{t("tcOFF")}</option>
-        </Form.Select>
-      </Box>
-    </Box>
+        {t("initSkid")}
+      </Form.Label>
+      <Form.Select
+        id="selectInitSkids"
+        name="selectInitSkids"
+        size="sm"
+        className="without-background text-light fw-medium"
+        value={carConfig.driverDto.initSkidDto.id}
+        onChange={handleChange}
+        style={{ width: "auto", fontSize: "0.65rem" }}
+      >
+        <option className="bg-dark" value={4}>
+          {t("isDefault")}
+        </option>
+        <option className="bg-dark" value={3}>
+          {t("isAcc")}
+        </option>
+        <option className="bg-dark" value={2}>
+          {t("isBrake")}
+        </option>
+        <option className="bg-dark" value={1}>
+          {t("tcOFF")}
+        </option>
+      </Form.Select>
+    </Form.Group>
   );
 };
 

@@ -1,6 +1,4 @@
 import FooterComponent from "./components/FooterComponent";
-import NavBarTop from "./components/NavBarTop";
-import SideBarLeft from "./components/SideBarLeft";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
@@ -9,7 +7,7 @@ import CommunityBuildsPage from "./pages/CommunityBuildsPage";
 import CreateBuildPage from "./pages/CreateBuildPage";
 import PersonalBuildsPage from "./pages/PersonalBuildsPage";
 import ProfilePage from "./pages/ProfilePage";
-import NavBarMobile from "./components/NavBarMobile";
+import NavBarMobile from "./components/nav-bar/NavBarMobile";
 import { LoginPage } from "./pages/LoginPage";
 import CreateAccountPage from "./pages/CreateAccountPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
@@ -24,6 +22,8 @@ import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 import useWindowSize from "./hooks/useWindowSize";
 import useCurrentPath from "./hooks/useCurrentPath";
 import { getBackgroundForPath } from "./utilities/funcionExport";
+import NavBarTop from "./components/nav-bar/NavBarTop";
+import SideBarLeft from "./components/nav-bar/SideBarLeft";
 
 export function App() {
   const { t, i18n } = useTranslation();
@@ -97,7 +97,7 @@ export function App() {
 
             <Route path="/home" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/contact" element={<ContactPage t={t} />} />
 
             {/* private routes */}
             <Route element={<ProtectedRoute />}>

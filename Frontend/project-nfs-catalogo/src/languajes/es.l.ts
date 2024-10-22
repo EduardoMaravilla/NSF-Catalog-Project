@@ -112,6 +112,7 @@ export const es = {
     motorAndAuxiliaryTitle: "Motor & Auxiliaries",
     auxiliaryOne: "Auxiliar 1",
     auxiliaryTwo: "Auxiliar 2",
+    confirmResetButton: "¿Estás seguro de que deseas borrar el progreso?",
 
     //Auxiliaries
     emptySpace: "Espacio Vacío",
@@ -147,9 +148,10 @@ export const es = {
     profileChangePassword: "Cambiar Contraseña",
     profileNewPassword: "Nueva Contraseña",
     profileNewConfirmPassword: "Confirmar Contraseña",
-    profileButtonChangePassword:"Cambiar Contraseña",
+    profileButtonChangePassword: "Cambiar Contraseña",
     profileButtonCancel: "Cancelar",
-    profileEditErrorPassword: "No se pudo cambiar la contraseña. Por favor, inténtalo de nuevo.",
+    profileEditErrorPassword:
+      "No se pudo cambiar la contraseña. Por favor, inténtalo de nuevo.",
 
     //Create Account Page
     createAccountTitle: "CREAR CUENTA",
@@ -184,13 +186,41 @@ export const es = {
     //Terms and Conditions
     termsAndContitionsTitle: "Términos y Condiciones",
     termsAndContitionsIntro:
-      "Por favor, lea cuidadosamente nuestros términos y condiciones antes de utilizar nuestro servicio.",
+      "Por favor, lee nuestros términos y condiciones detenidamente antes de utilizar nuestro servicio.",
     termsAndContitionsAcceptance:
-      "Al utilizar nuestro servicio, usted acepta cumplir con estos términos y condiciones.",
+      "Al utilizar nuestro servicio, aceptas cumplir con estos términos y condiciones.",
     termsAndContitionsChanges:
       "Nos reservamos el derecho de modificar estos términos en cualquier momento.",
     termsAndContitionsError:
-      "Debe aceptar los términos y condiciones para continuar",
+      "Debes aceptar los términos y condiciones para proceder.",
+    termsAndContitionsSection1Title: "Aceptación de los términos:",
+    termsAndContitionsSection1Content:
+      "Al registrarse y utilizar nuestro sitio web, el usuario acepta cumplir con estos términos y condiciones. Nos reservamos el derecho de modificar estos términos en cualquier momento, y se recomienda revisar esta página periódicamente para estar al tanto de cualquier cambio.",
+    termsAndContitionsSection2Title: "Registro y uso de cuentas:",
+    termsAndContitionsSection2Content:
+      "Los usuarios deben registrarse con información precisa y actualizada. Cada usuario es responsable de la seguridad de su cuenta y de mantener la confidencialidad de sus credenciales de inicio de sesión. No se permite la creación de múltiples cuentas por la misma persona.",
+    termsAndContitionsSection3Title:
+      "Creación y almacenamiento de configuraciones:",
+    termsAndContitionsSection3Content:
+      "Al registrarse, los usuarios pueden guardar sus propias configuraciones del juego. Estas configuraciones son visibles para otros usuarios y pueden ser compartidas en el sitio web. No somos responsables por la pérdida o modificación de las configuraciones almacenadas.",
+    termsAndContitionsSection4Title: "Uso adecuado del sitio:",
+    termsAndContitionsSection4Content:
+      "Este sitio está destinado a ser un catálogo para compartir configuraciones relacionadas con el videojuego Need for Speed. Cualquier uso indebido, como la publicación de contenido ofensivo, inapropiado o que infrinja derechos de terceros, está prohibido. Nos reservamos el derecho de eliminar dicho contenido y suspender o eliminar cuentas en caso de violación de esta política.",
+    termsAndContitionsSection5Title: "Derechos de propiedad intelectual:",
+    termsAndContitionsSection5Content:
+      "El contenido original del sitio, como el diseño, texto y otros gráficos, es propiedad de @SDD-CATALOG. Las configuraciones de los usuarios son propiedad de los usuarios que las crean, pero al publicarlas en el sitio, el usuario concede a @SDD-CATALOG una licencia no exclusiva para mostrar dichas configuraciones en el catálogo.",
+    termsAndContitionsSection6Title: "Limitación de responsabilidad:",
+    termsAndContitionsSection6Content:
+      "@SDD-CATALOG no se hace responsable de posibles interrupciones del servicio, errores o pérdida de datos. El sitio web se proporciona 'tal cual', sin garantías de ningún tipo, ya sea expresa o implícita.",
+    termsAndContitionsSection7Title: "Política de privacidad:",
+    termsAndContitionsSection7Content:
+      "La información personal proporcionada por los usuarios durante el registro está protegida de acuerdo con nuestra Política de Privacidad. No compartimos información personal con terceros sin el consentimiento explícito del usuario.",
+    termsAndContitionsSection8Title: "Modificaciones del servicio:",
+    termsAndContitionsSection8Content:
+      "Nos reservamos el derecho de modificar, suspender o descontinuar cualquier parte del servicio en cualquier momento sin previo aviso.",
+    termsAndContitionsSection9Title: "Ley aplicable:",
+    termsAndContitionsSection9Content:
+      "Estos términos y condiciones se regirán de acuerdo con las leyes de la República de El Salvador. Cualquier disputa relacionada con estos términos será resuelta en los tribunales competentes de El Salvador.",
 
     //Verify email
 
@@ -218,5 +248,22 @@ export const es = {
       "Por favor, introduce una contraseña válida",
     forgotPasswordResetSuccessMessage:
       "Contraseña cambiada exitosamente, ahora puedes iniciar sesión nuevamente.",
+
+    //Contact Form Page
+    pageContactTitle: "Contáctanos",
+    pageContactText:
+      "Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos.",
+    pageContactName: "Nombre",
+    pageContactNameText: "Escribe tu nombre o alias",
+    pageContactEmail: "Correo Electrónico",
+    pageContactEmailText: "Ingresa tu dirección de correo electrónico",
+    pageContactSubject: "Asunto",
+    pageContactSubjectText: "Indica el motivo de tu consulta",
+    pageContactMessage: "Mensaje",
+    pageContactMessageText: "Escribe tu mensaje aquí",
+    pageContactSubmit: "Enviar",
+    pageContactSuccessMessage: "Tu mensaje ha sido enviado exitosamente",
+    pageContactError:
+      "No se pudo enviar el mensaje, por favor intenta más tarde",
   },
 };

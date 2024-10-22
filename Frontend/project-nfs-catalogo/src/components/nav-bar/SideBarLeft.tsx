@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdCreateNewFolder } from "react-icons/md";
 import { FaUser, FaAddressCard } from "react-icons/fa";
-import { useAuth } from "../context/auth/useAuth";
-import { AuthenticationContext } from "../context/auth/AuthenticationContext";
+
 import { Nav } from "react-bootstrap";
 import { BsBoxArrowInLeft, BsBoxArrowInRight } from "react-icons/bs";
 import { IoIosPeople } from "react-icons/io";
-import useCurrentPath from "../hooks/useCurrentPath";
+import { useAuth } from "../../context/auth/useAuth";
+import { AuthenticationContext } from "../../context/auth/AuthenticationContext";
+import useCurrentPath from "../../hooks/useCurrentPath";
+
 
 type SideBarLeftProps = {
   t: (key: string) => string;
@@ -22,7 +24,18 @@ const SideBarLeft: React.FC<SideBarLeftProps> = ({ t }) => {
 
   const handleToggle = () => {
     setIsCollapsed(!isCollapsed);
+    localStorage.setItem("isCollapsed-left-bar", JSON.stringify(!isCollapsed));
   };
+
+  useEffect(() => {
+    const isCollapsedLocal = localStorage.getItem("isCollapsed-left-bar");
+    if (isCollapsedLocal) {
+      setIsCollapsed(JSON.parse(isCollapsedLocal));
+    } else {
+      localStorage.setItem("isCollapsed-left-bar", JSON.stringify(false));
+    }
+  }, [])
+  
 
   return (
     <div className={`left-side-bar ${isCollapsed ? "" : "expanded"}`}>
