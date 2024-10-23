@@ -28,7 +28,7 @@ class IDriverRepositoryTest {
     void setUp() {
         driver = new Driver();
         driver.setDrive(50);
-        driver.setDirection(8);
+        driver.setDirection(5);
         driver.setDownForce(3);
         driver.setControlTraction(true);
         initSkid = new InitSkid();

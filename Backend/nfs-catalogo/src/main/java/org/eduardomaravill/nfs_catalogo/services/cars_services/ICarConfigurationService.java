@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ICarConfigurationService {
     CarConfigurationDto getCarConfiguration(Long id);
-    void createCarConfiguration(CarConfigurationDto carConfigurationDto);
+    CarConfigurationDto createCarConfiguration(CarConfigurationDto carConfigurationDto);
     void updateCarConfiguration(Long id, CarConfigurationDto carConfigurationDto);
     void deleteCarConfiguration(Long id);
     List<CarConfigurationDto> getAllCarConfigurations();

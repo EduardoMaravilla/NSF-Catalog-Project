@@ -67,6 +67,21 @@ public class DriverServiceImpl implements IDriverService {
     }
 
     @Override
+    public DriverDto createOrGet(DriverDto driverDto) {
+        verifyDataExists(driverDto);
+        Driver driver = driverRepository.driverExists(
+                driverDto.getDrive(),
+                driverDto.getDirection(),
+                driverDto.getDownForce(),
+                driverDto.getControlTraction(),
+                driverDto.getInitSkidDto().getId()).orElseGet(() -> {
+            Driver newDriver = mapperService.convertToEntity(driverDto);
+            return driverRepository.save(newDriver);
+        });
+        return mapperService.convertToDto(driver);
+    }
+
+    @Override
     public List<DriverDto> getAllDrivers() {
         return driverRepository.findAll().stream().map(mapperService::convertToDto).toList();
     }

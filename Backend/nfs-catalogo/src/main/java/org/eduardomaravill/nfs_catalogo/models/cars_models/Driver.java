@@ -21,18 +21,18 @@ public class Driver {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Max(200)
-    @Min(0)
+    @Max(100)
+    @Min(-100)
     @NotNull
     private Integer drive;
 
-    @Max(10)
-    @Min(0)
+    @Max(5)
+    @Min(-5)
     @NotNull
     private Integer direction;
 
-    @Max(10)
-    @Min(0)
+    @Max(5)
+    @Min(-5)
     @NotNull
     @Column(name = "down_force")
     private Integer downForce;

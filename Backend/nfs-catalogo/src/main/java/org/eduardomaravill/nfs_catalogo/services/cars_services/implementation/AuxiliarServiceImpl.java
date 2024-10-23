@@ -1,5 +1,6 @@
 package org.eduardomaravill.nfs_catalogo.services.cars_services.implementation;
 
+import jakarta.transaction.Transactional;
 import org.eduardomaravill.nfs_catalogo.dtos.car_dtos.AuxiliarDto;
 import org.eduardomaravill.nfs_catalogo.dtos.car_dtos.LevelDto;
 import org.eduardomaravill.nfs_catalogo.exceptions.DataNotFoundException;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 public class AuxiliarServiceImpl implements IAuxiliarService {
 
     private static final String AUXILIAR_MESSAGE = "Auxiliar";

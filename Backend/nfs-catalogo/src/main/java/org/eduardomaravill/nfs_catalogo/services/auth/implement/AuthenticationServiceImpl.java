@@ -1,6 +1,7 @@
 package org.eduardomaravill.nfs_catalogo.services.auth.implement;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.eduardomaravill.nfs_catalogo.dtos.auth.*;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.NewUpdatePasswordRequest;
 import org.eduardomaravill.nfs_catalogo.dtos.user_dtos.UpdatePasswordRequest;

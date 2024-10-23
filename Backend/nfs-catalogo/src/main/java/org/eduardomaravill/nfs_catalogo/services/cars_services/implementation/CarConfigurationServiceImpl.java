@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.LongFunction;
 
 @Service
@@ -80,36 +81,11 @@ public class CarConfigurationServiceImpl implements ICarConfigurationService {
     }
 
     @Override
-    public void createCarConfiguration(CarConfigurationDto carConfigurationDto) {
+    public CarConfigurationDto createCarConfiguration(CarConfigurationDto carConfigurationDto) {
         verifyDataExists(carConfigurationDto);
-        if (carConfigurationRepository.existsCarConfiguration(carConfigurationDto.getCarDto().getId(),
-                carConfigurationDto.getEngineDto().getId(),
-                carConfigurationDto.getInductionLevelDto().getId(),
-                carConfigurationDto.getEcuLevelDto().getId(),
-                carConfigurationDto.getInjectionLevelDto().getId(),
-                carConfigurationDto.getEscapeLevelDto().getId(),
-                carConfigurationDto.getTurboDto().getId(),
-                carConfigurationDto.getNitroLevelDto().getId(),
-                carConfigurationDto.getSuspensionDto().getId(),
-                carConfigurationDto.getBrakeLevelDto().getId(),
-                carConfigurationDto.getTireDto().getId(),
-                carConfigurationDto.getEmbragueLevelDto().getId(),
-                carConfigurationDto.getGearDto().getId(),
-                carConfigurationDto.getDifferentialLevelDto().getId(),
-                carConfigurationDto.getTopSpeed(),
-                carConfigurationDto.getOneHundred(),
-                carConfigurationDto.getPower(),
-                carConfigurationDto.getPar(),
-                carConfigurationDto.getFourHundred(),
-                carConfigurationDto.getDriverDto().getId(),
-                carConfigurationDto.getAuxiliarOneDto().getId(),
-                carConfigurationDto.getAuxiliarTwoDto().getId(),
-                carConfigurationDto.getClassesDto().getId())) {
-            throw new ResourceDuplicateException(CAR_CONFIGURATION_MESSAGE, "this");
-        }
         CarConfiguration carConfiguration = mapperService.convertToEntity(carConfigurationDto);
-        carConfigurationRepository.save(carConfiguration);
-
+        carConfiguration = carConfigurationRepository.save(carConfiguration);
+        return mapperService.convertToDto(carConfiguration);
     }
 
     @Override

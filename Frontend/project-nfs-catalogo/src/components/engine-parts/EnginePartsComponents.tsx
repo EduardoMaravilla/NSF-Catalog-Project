@@ -106,7 +106,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
     const level = levels.find((l) => l.id === levelSelected);
     if (level) {
       const newCarConfig: CarConfigurationDto = { ...carConfig };
-      newCarConfig.embregueLevelDto = level;
+      newCarConfig.embragueLevelDto = level;
       setCarConfig(newCarConfig);
       localStorage.setItem(
         "car-configuration-created",
@@ -119,7 +119,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
     const level = levels.find((l) => l.id === levelSelected);
     if (level) {
       const newCarConfig: CarConfigurationDto = { ...carConfig };
-      newCarConfig.differencialLevelDto = level;
+      newCarConfig.differentialLevelDto = level;
       setCarConfig(newCarConfig);
       localStorage.setItem(
         "car-configuration-created",
@@ -341,7 +341,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
                     <SelectLevelComponent
                       name="selectEmbragueLevel"
                       t={t}
-                      selectedLevel={carConfig.embregueLevelDto.id}
+                      selectedLevel={carConfig.embragueLevelDto.id}
                       setSelectedLevel={updateEmbragueLevel}
                     />
                   </Card.Body>
@@ -371,7 +371,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
                     <SelectLevelComponent
                       name="selectDifferentialLevel"
                       t={t}
-                      selectedLevel={carConfig.differencialLevelDto.id}
+                      selectedLevel={carConfig.differentialLevelDto.id}
                       setSelectedLevel={updateDifferentialLevel}
                     />
                   </Card.Body>
@@ -537,7 +537,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
                     <SelectLevelComponent
                       name="selectEmbragueLevel"
                       t={t}
-                      selectedLevel={carConfig.embregueLevelDto.id}
+                      selectedLevel={carConfig.embragueLevelDto.id}
                       setSelectedLevel={updateEmbragueLevel}
                     />
                   </Card.Body>
@@ -569,7 +569,7 @@ const EnginePartsComponents: FC<EnginePartsComponentProps> = ({
                     <SelectLevelComponent
                       name="selectDifferentialLevel"
                       t={t}
-                      selectedLevel={carConfig.differencialLevelDto.id}
+                      selectedLevel={carConfig.differentialLevelDto.id}
                       setSelectedLevel={updateDifferentialLevel}
                     />
                   </Card.Body>

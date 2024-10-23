@@ -10,13 +10,18 @@ import {
 import { FC, useRef, useState } from "react";
 import { SelectAuxiliaryComponent } from "./SelectAuxiliaryComponent";
 import { SelectEngineComponent } from "./SelectEngineComponent";
-import { getColorLevel, isApiResponseError } from "../../utilities/funcionExport";
+import {
+  getColorLevel,
+  isApiResponseError,
+  isValidTokenResponse,
+} from "../../utilities/funcionExport";
 import HReCaptchaComponent from "../utils/HReCaptchaComponent";
 import { useRacerValidateReCaptcha } from "../../services/racer/useRacerValidateReCaptcha";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useAuth } from "../../context/auth/useAuth";
 import { AuthenticationContext } from "../../context/auth/AuthenticationContext";
 import { ValidTokenResponse } from "../../types/TypesUserLogin";
+import { useSaveRacerCarService } from "../../services/racer-car-configuration/useSaveRacerCarConfig";
 
 type CarMotorAndExtrasComponentProps = {
   t: (key: string) => string;
@@ -28,11 +33,12 @@ export const CarMotorAndExtrasComponent: FC<
   CarMotorAndExtrasComponentProps
 > = ({ t, carConfig, setCarConfig }) => {
   const { engines, auxiliars } = useLoadBasicData(LoadBasicDataContext);
-  const { isAuthenticated, isLogined, setIsLogined } = useAuth(
+  const { isAuthenticated, isLogined, setIsLogined, jwtToken } = useAuth(
     AuthenticationContext
   );
 
   const captchaService = useRacerValidateReCaptcha();
+  const racerCarService = useSaveRacerCarService();
 
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const captchaRef = useRef<HCaptcha | null>(null);
@@ -134,7 +140,26 @@ export const CarMotorAndExtrasComponent: FC<
       return;
     }
 
-  }
+    if (jwtToken) {
+      racerCarService.chargeTokenAndDataInOptions(jwtToken, carConfig);
+      const saveResponse = await racerCarService.getFetch();
+      if (isApiResponseError(saveResponse.data)) {
+        setIsLogined(false);
+        alert(t("errorSaveCarConfig"));
+        return;
+      }else if(isValidTokenResponse(saveResponse.data)) {
+        if(saveResponse.data.valid){
+          alert(t("successSaveCarConfig"));
+        }else {
+          alert(t("errorSaveCarConfig"));
+        }
+      }else{
+        alert(t("errorSaveCarConfig"));
+      }
+    }
+    setCaptchaToken(null);
+    setIsLogined(false);
+  };
 
   return (
     <Card className="h-100 text-light profile-card  border border-primary-subtle">

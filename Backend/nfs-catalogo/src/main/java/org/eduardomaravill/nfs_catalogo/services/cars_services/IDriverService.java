@@ -13,5 +13,7 @@ public interface IDriverService {
 
     void deleteDriver(Long id);
 
+    DriverDto createOrGet(DriverDto driverDto);
+
     List<DriverDto> getAllDrivers();
 }

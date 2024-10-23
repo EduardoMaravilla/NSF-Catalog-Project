@@ -113,6 +113,8 @@ export const es = {
     auxiliaryOne: "Auxiliar 1",
     auxiliaryTwo: "Auxiliar 2",
     confirmResetButton: "¿Estás seguro de que deseas borrar el progreso?",
+    errorSaveCarConfig: "No se pudo guardar la configuración. Por favor, inténtalo nuevamente.",
+    successSaveCarConfig: "Configuración guardada con éxito.",
 
     //Auxiliaries
     emptySpace: "Espacio Vacío",

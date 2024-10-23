@@ -113,6 +113,8 @@ export const en = {
     auxiliaryOne: "Auxiliary 1",
     auxiliaryTwo: "Auxiliary 2",
     confirmResetButton: "Are you sure you want to delete progress?",
+    errorSaveCarConfig: "The configuration could not be saved. Please try again.",
+    successSaveCarConfig: "Configuration saved successfully.",
 
     //Auxiliaries
     emptySpace: "Empty space",

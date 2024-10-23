@@ -16,6 +16,8 @@ interface ImportMetaEnv {
   readonly VITE_API_URL_Update_Password: string;
   readonly VITE_API_URL_Verify_token_ReCaptcha: string;
   readonly VITE_API_URL_Profile_Password_Update: string;
+  /*Racer Car Configuration */
+  readonly VITE_API_URL_Save_Racer_Car: string;
   /*Auxiliaries*/
   readonly VITE_API_URL_Auxiliaries: string;
   /*CarConfig*/

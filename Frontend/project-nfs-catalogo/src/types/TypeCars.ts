@@ -66,9 +66,9 @@ export const initialCarConfiguration: CarConfigurationDto = {
     streetTypeDto: { id: 1, streetTypeVal: "Normal" },
     levelDto: { id: 1, level: "Basico" },
   },
-  embregueLevelDto: { id: 1, level: "Basico" },
+  embragueLevelDto: { id: 1, level: "Basico" },
   gearDto: { id: 1, gearValue: 1, levelDto: { id: 5, level: "Elite" } },
-  differencialLevelDto: { id: 1, level: "Basico" },
+  differentialLevelDto: { id: 1, level: "Basico" },
   topSpeed: 0,
   oneHundred: 0.0,
   power: 0,
@@ -114,9 +114,9 @@ export interface CarConfigurationDto {
   suspensionDto: SuspensionDto;
   brakeLevelDto: LevelDto;
   tireDto: TireDto;
-  embregueLevelDto: LevelDto;
+  embragueLevelDto: LevelDto;
   gearDto: GearDto;
-  differencialLevelDto: LevelDto;
+  differentialLevelDto: LevelDto; 
   topSpeed: number;
   oneHundred: number;
   power: number;

@@ -21,12 +21,12 @@ public class UserCarConfiguration {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id")
     @NotNull
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "car_configuration_id",nullable = false)
+    @JoinColumn(name = "car_configuration_id")
     @NotNull
     private CarConfiguration carConfiguration;
 }

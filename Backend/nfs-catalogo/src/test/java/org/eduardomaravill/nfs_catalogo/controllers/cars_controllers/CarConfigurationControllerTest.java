@@ -142,7 +142,7 @@ class CarConfigurationControllerTest {
     @Test
     @DisplayName("Test controller create CarConfiguration")
     void createCarConfiguration() throws Exception {
-        doNothing().when(carConfigurationService).createCarConfiguration(any(CarConfigurationDto.class));
+        when(carConfigurationService.createCarConfiguration(any(CarConfigurationDto.class))).thenReturn(carConfigurationDto);
 
 
         mockMvc.perform(post("/car-configurations")
